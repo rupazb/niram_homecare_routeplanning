@@ -7,178 +7,59 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: -apple-system, "Segoe UI", Arial, sans-serif;
-      color: #1c2a2f;
-    }
-    #app {
-      display: flex;
-      height: 100%;
-      width: 100%;
-    }
-    #map {
-      flex: 1;
-      height: 100%;
-    }
-    #sidebar {
-      width: 340px;
-      height: 100%;
-      overflow-y: auto;
-      background: #f7f8f6;
-      border-left: 1px solid #d8ddd9;
-      box-sizing: border-box;
-      padding: 18px 16px 40px;
-    }
-    #sidebar h1 {
-      font-size: 17px;
-      margin: 0 0 2px;
-      color: #0f3d3e;
-    }
-    #sidebar .subtitle {
-      font-size: 12px;
-      color: #6b7772;
-      margin: 0 0 18px;
-    }
-    .section {
-      margin-bottom: 20px;
-    }
-    .section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #6b7772;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    #day-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .day-btn {
-      flex: 1 1 auto;
-      padding: 7px 4px;
-      font-size: 12px;
-      border: 1px solid #c7d0cc;
-      background: white;
-      border-radius: 5px;
-      cursor: pointer;
-      color: #1c2a2f;
-      min-width: 56px;
-      text-align: center;
-    }
-    .day-btn.active {
-      background: #0f6e56;
-      border-color: #0f6e56;
-      color: white;
-    }
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      margin-top: 6px;
-    }
-    #optimize-btn {
-      width: 100%;
-      padding: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      background: #0f6e56;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #optimize-btn:disabled {
-      background: #a9b3ae;
-      cursor: not-allowed;
-    }
-    #summary {
-      font-size: 12px;
-      background: white;
-      border: 1px solid #d8ddd9;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-top: 10px;
-      display: none;
-    }
-    #summary div {
-      margin: 2px 0;
-    }
-    #stop-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .stop-card {
-      background: white;
-      border: 1px solid #d8ddd9;
-      border-radius: 6px;
-      padding: 8px 10px;
-      margin-bottom: 6px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .stop-card:hover {
-      border-color: #0f6e56;
-    }
-    .stop-seq {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      line-height: 18px;
-      text-align: center;
-      background: #0f6e56;
-      color: white;
-      border-radius: 50%;
-      font-size: 11px;
-      margin-right: 6px;
-    }
-    .stop-name {
-      font-weight: 600;
-    }
-    .stop-meta {
-      color: #6b7772;
-      margin-top: 3px;
-    }
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 10px;
-      margin-left: 4px;
-    }
+    html, body { height: 100%; margin: 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; color: #1c2a2f; }
+    #app { display: flex; height: 100%; width: 100%; }
+    #map { flex: 1; height: 100%; }
+    #sidebar { width: 360px; height: 100%; overflow-y: auto; background: #f7f8f6; border-left: 1px solid #d8ddd9; box-sizing: border-box; padding: 18px 16px 40px; }
+    #sidebar h1 { font-size: 17px; margin: 0 0 2px; color: #0f3d3e; }
+    #sidebar .subtitle { font-size: 12px; color: #6b7772; margin: 0 0 18px; }
+    .section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e6e3; }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #6b7772; margin-bottom: 8px; font-weight: 600; }
+
+    .tab-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tab-btn { flex: 1 1 auto; padding: 7px 4px; font-size: 12px; border: 1px solid #c7d0cc; background: white; border-radius: 5px; cursor: pointer; color: #1c2a2f; min-width: 56px; text-align: center; }
+    .tab-btn.active { background: #0f6e56; border-color: #0f6e56; color: white; }
+
+    .toggle-row { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 6px; }
+
+    #optimize-btn, .primary-btn { width: 100%; padding: 10px; font-size: 13px; font-weight: 600; background: #0f6e56; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 8px; }
+    #optimize-btn:disabled, .primary-btn:disabled { background: #a9b3ae; cursor: not-allowed; }
+    .secondary-btn { width: 100%; padding: 8px; font-size: 12px; background: white; color: #0f6e56; border: 1px solid #0f6e56; border-radius: 5px; cursor: pointer; margin-top: 6px; }
+
+    #summary { font-size: 12px; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 10px 12px; margin-top: 10px; display: none; }
+    #summary div { margin: 2px 0; }
+
+    #stop-list { list-style: none; margin: 0; padding: 0; }
+    .stop-card { background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; font-size: 12px; cursor: pointer; }
+    .stop-card:hover { border-color: #0f6e56; }
+    .stop-seq { display: inline-block; width: 18px; height: 18px; line-height: 18px; text-align: center; background: #0f6e56; color: white; border-radius: 50%; font-size: 11px; margin-right: 6px; }
+    .stop-name { font-weight: 600; }
+    .stop-meta { color: #6b7772; margin-top: 3px; }
+    .badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
     .badge-bed { background: #f9d8d8; color: #7a1f1f; }
     .badge-chair { background: #f9ecd0; color: #7a5a0c; }
     .badge-mobile { background: #d7ece4; color: #0f5a44; }
-    #status-msg {
-      font-size: 12px;
-      color: #6b7772;
-      margin-top: 8px;
-    }
-    .legend-box {
-      font-size: 12px;
-      background: white;
-      padding: 8px 10px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-    .legend-row {
-      display: flex;
-      align-items: center;
-      margin-top: 4px;
-    }
-    .legend-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      border: 1px solid #333;
-      display: inline-block;
-      margin-right: 7px;
-    }
+
+    #status-msg { font-size: 12px; color: #6b7772; margin-top: 8px; }
+
+    .legend-box { font-size: 12px; background: white; padding: 8px 10px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .legend-row { display: flex; align-items: center; margin-top: 4px; }
+    .legend-dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid #333; display: inline-block; margin-right: 7px; }
+
+    #patient-search { width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 5px; margin-bottom: 8px; }
+    #patient-checklist { max-height: 240px; overflow-y: auto; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 6px 8px; }
+    .patient-row { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #f0f2f0; }
+    .patient-row:last-child { border-bottom: none; }
+    .patient-row label { flex: 1; cursor: pointer; }
+    .select-actions { display: flex; gap: 6px; margin-bottom: 6px; }
+    .select-actions button { flex: 1; font-size: 11px; padding: 5px; border: 1px solid #c7d0cc; background: white; border-radius: 4px; cursor: pointer; }
+
+    #coord-panel input { width: 46%; padding: 5px 6px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 4px; margin-bottom: 6px; }
+    #new-location-result { font-size: 12px; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 8px 10px; margin-top: 8px; display: none; }
+    #save-form { display: none; margin-top: 8px; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 8px 10px; }
+    #save-form input, #save-form select, #save-form textarea { width: 100%; box-sizing: border-box; padding: 5px 6px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 4px; margin-bottom: 6px; }
+    #save-status { font-size: 11px; color: #6b7772; margin-top: 4px; }
   </style>
 </head>
 
@@ -191,19 +72,37 @@
     <p class="subtitle">Weekly home-visit routing for the palliative care vehicle</p>
 
     <div class="section">
+      <div class="section-label">Route mode</div>
+      <div class="tab-row">
+        <button class="tab-btn active" id="mode-day-btn" onclick="setMode('day')">By day</button>
+        <button class="tab-btn" id="mode-custom-btn" onclick="setMode('custom')">Custom selection</button>
+      </div>
+    </div>
+
+    <div class="section" id="day-section">
       <div class="section-label">Visit day</div>
-      <div id="day-tabs"></div>
+      <div id="day-tabs" class="tab-row"></div>
+    </div>
+
+    <div class="section" id="custom-section" style="display:none;">
+      <div class="section-label">Select patients</div>
+      <input type="text" id="patient-search" placeholder="Search by name...">
+      <div class="select-actions">
+        <button onclick="selectAllVisible(true)">Select all</button>
+        <button onclick="selectAllVisible(false)">Clear</button>
+      </div>
+      <div id="patient-checklist"></div>
     </div>
 
     <div class="section">
       <div class="section-label">Map options</div>
-      <label class="toggle-row">
-        <input type="checkbox" id="cb-deceased"> Show deceased patients
-      </label>
+      <label class="toggle-row"><input type="checkbox" id="cb-deceased"> Show deceased patients</label>
+      <button class="secondary-btn" onclick="fetchPatientsFromSheet()">Refresh from Sheet</button>
+      <div id="sheet-status" class="subtitle" style="margin-top:4px;"></div>
     </div>
 
     <div class="section">
-      <button id="optimize-btn" disabled>Optimize today's route</button>
+      <button id="optimize-btn" disabled>Optimize route</button>
       <div id="summary"></div>
       <div id="status-msg">Select a day, then optimize.</div>
     </div>
@@ -211,6 +110,37 @@
     <div class="section">
       <div class="section-label">Stop order</div>
       <ul id="stop-list"></ul>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Add a new location</div>
+      <p class="subtitle" style="margin-top:0;">Click the map, or enter coordinates below. It routes directly to Niram Palliative Care Center.</p>
+      <div id="coord-panel">
+        <input type="text" id="lat-input" placeholder="Latitude">
+        <input type="text" id="lng-input" placeholder="Longitude">
+        <button class="secondary-btn" onclick="goToCoordinates()">Locate</button>
+      </div>
+      <div id="new-location-result"></div>
+      <button class="secondary-btn" id="show-save-form-btn" style="display:none;" onclick="toggleSaveForm()">Save this location to the roster</button>
+      <div id="save-form">
+        <input type="text" id="save-name" placeholder="Patient name">
+        <select id="save-mobility">
+          <option value="">Mobility status...</option>
+          <option value="Bedbound">Bedbound</option>
+          <option value="Chairbound">Chairbound</option>
+          <option value="Mobile">Mobile</option>
+        </select>
+        <select id="save-case">
+          <option value="">Case type...</option>
+          <option value="CA">CA</option>
+          <option value="NON CA">NON CA</option>
+        </select>
+        <textarea id="save-diagnosis" placeholder="Diagnosis" rows="2"></textarea>
+        <input type="text" id="save-address" placeholder="Address">
+        <input type="text" id="save-phone" placeholder="Phone number">
+        <button class="primary-btn" onclick="submitNewPatient()">Submit to Google Sheet</button>
+        <div id="save-status"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -221,15 +151,27 @@
 // ---------------------------------------------------------------------
 // CONFIG
 // ---------------------------------------------------------------------
-const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // replace with your OpenRouteService key
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
 
-const MOBILITY_COLOR = {
-  Bedbound: "#c0392b",
-  Chairbound: "#d68910",
-  Mobile: "#0f6e56",
-  Unknown: "#7f8c8d"
-};
+// Google Apps Script Web App URL (see google_apps_script.gs + README for setup).
+// A plain Sheets API key can only READ public sheets — appending rows needs
+// either OAuth or this Apps Script proxy, which is why we use the latter.
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxdycTVX-sX7ICEhVLX4OZDUPUiMz83WMFuo-LF6u5f6vOnbzNLJM6IkdtOuz_Jb2-04g/exec";
+
+// Live read of the master roster straight from Google Sheets — this makes
+// the Sheet the single source of truth: editing it, or adding a row through
+// the "save this location" form below, shows up here on next refresh with
+// no separate CSV/GeoJSON export step. Requires:
+//   - Google Sheets API enabled on a Google Cloud project
+//   - An API key restricted to the Sheets API
+//   - The sheet shared as "Anyone with the link — Viewer"
+const GOOGLE_SHEETS_API_KEY = "AIzaSyCrYFrV-2XL035OiVAPsrfTCdwAB1KRgR4";
+const SPREADSHEET_ID = "1FJlpzfeQ-nBJJHCQsl90eQZHPMfXrswqpw9jeAgNiww";       // from the sheet's URL
+const SHEET_RANGE = "Patients!A:Z";                  // tab name + full range
+
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const MOBILITY_COLOR = { Bedbound: "#c0392b", Chairbound: "#d68910", Mobile: "#0f6e56", Unknown: "#7f8c8d" };
+const CUSTOM_DEBOUNCE_MS = 700;
 
 // ---------------------------------------------------------------------
 // STATE
@@ -237,20 +179,25 @@ const MOBILITY_COLOR = {
 let map;
 let hospitalLatLng = null;
 let hospitalMarker = null;
-let patientFeatures = [];      // raw features from patients_all.geojson
-let patientMarkers = {};       // registration_number -> marker
+let patientFeatures = [];
+let patientMarkers = {};
+let mode = 'day';                 // 'day' | 'custom'
 let selectedDay = null;
+let selectedPatientIds = new Set(); // registration_number set, custom mode
 let showDeceased = false;
 let routeLayer = null;
 let stopMarkersLayer = L.layerGroup();
+let customDebounceTimer = null;
+
+let newLocationMarker = null;
+let newLocationRouteLayer = null;
+let pendingNewLocation = null; // {lat, lng}
 
 // ---------------------------------------------------------------------
 // MAP SETUP
 // ---------------------------------------------------------------------
 map = L.map('map', { zoomControl: false }).setView([13.35, 77.1], 10);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 L.control.zoom({ position: 'bottomleft' }).addTo(map);
 stopMarkersLayer.addTo(map);
 
@@ -264,18 +211,41 @@ legend.onAdd = function () {
     <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Chairbound}"></span>Chairbound</div>
     <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Mobile}"></span>Mobile</div>
     <div class="legend-row"><span class="legend-dot" style="background:#7f8c8d"></span>Deceased</div>
+    <div class="legend-row"><span class="legend-dot" style="background:#2c3e93"></span>New location</div>
   `;
   return div;
 };
 legend.addTo(map);
 
 // ---------------------------------------------------------------------
-// DAY TABS
+// MODE + DAY TABS
 // ---------------------------------------------------------------------
+function setMode(newMode) {
+  mode = newMode;
+  document.getElementById('mode-day-btn').classList.toggle('active', mode === 'day');
+  document.getElementById('mode-custom-btn').classList.toggle('active', mode === 'custom');
+  document.getElementById('day-section').style.display = mode === 'day' ? 'block' : 'none';
+  document.getElementById('custom-section').style.display = mode === 'custom' ? 'block' : 'none';
+  clearRoute();
+  refreshPatientMarkers();
+
+  if (mode === 'day') {
+    document.getElementById('optimize-btn').disabled = !selectedDay;
+    document.getElementById('status-msg').textContent = selectedDay
+      ? 'Ready to optimize ' + selectedDay + '.'
+      : 'Select a day, then optimize.';
+  } else {
+    document.getElementById('optimize-btn').disabled = selectedPatientIds.size === 0;
+    document.getElementById('status-msg').textContent = selectedPatientIds.size
+      ? selectedPatientIds.size + ' patient(s) selected.'
+      : 'Select patients from the list to build a route.';
+  }
+}
+
 const dayTabsEl = document.getElementById('day-tabs');
 DAYS.forEach(day => {
   const btn = document.createElement('button');
-  btn.className = 'day-btn';
+  btn.className = 'tab-btn';
   btn.textContent = day.slice(0, 3);
   btn.onclick = () => selectDay(day);
   btn.dataset.day = day;
@@ -284,46 +254,173 @@ DAYS.forEach(day => {
 
 function selectDay(day) {
   selectedDay = day;
-  document.querySelectorAll('.day-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.day === day);
-  });
+  document.querySelectorAll('#day-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
   clearRoute();
   refreshPatientMarkers();
   document.getElementById('optimize-btn').disabled = false;
   const count = patientFeatures.filter(f => f.properties.assigned_day === day).length;
-  document.getElementById('status-msg').textContent =
-    count + ' patient(s) scheduled ' + day + '. Click optimize to sequence the route.';
+  document.getElementById('status-msg').textContent = count + ' patient(s) scheduled ' + day + '. Click optimize to sequence the route.';
 }
 
 // ---------------------------------------------------------------------
-// LOAD DATA
+// CUSTOM SELECTION CHECKLIST
 // ---------------------------------------------------------------------
-Promise.all([
-  fetch('hospital_depot.geojson').then(r => r.json()),
-  fetch('patients_all.geojson').then(r => r.json())
-]).then(([depot, patients]) => {
+function renderChecklist(filterText) {
+  const listEl = document.getElementById('patient-checklist');
+  listEl.innerHTML = '';
+  const q = (filterText || '').trim().toLowerCase();
+
+  patientFeatures
+    .filter(f => f.properties.status === 'Active')
+    .filter(f => !q || f.properties.name.toLowerCase().includes(q))
+    .forEach(f => {
+      const p = f.properties;
+      const row = document.createElement('div');
+      row.className = 'patient-row';
+      const checked = selectedPatientIds.has(p.registration_number) ? 'checked' : '';
+      row.innerHTML =
+        '<input type="checkbox" data-reg="' + p.registration_number + '" ' + checked + '>' +
+        '<label>' + p.name + badgeFor(p.mobility) + '</label>';
+      listEl.appendChild(row);
+    });
+
+  listEl.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const reg = e.target.dataset.reg;
+      if (e.target.checked) selectedPatientIds.add(reg); else selectedPatientIds.delete(reg);
+      onCustomSelectionChanged();
+    });
+  });
+}
+
+function selectAllVisible(select) {
+  document.querySelectorAll('#patient-checklist input[type=checkbox]').forEach(cb => {
+    cb.checked = select;
+    if (select) selectedPatientIds.add(cb.dataset.reg); else selectedPatientIds.delete(cb.dataset.reg);
+  });
+  onCustomSelectionChanged();
+}
+
+document.getElementById('patient-search').addEventListener('input', e => renderChecklist(e.target.value));
+
+function onCustomSelectionChanged() {
+  refreshPatientMarkers();
+  document.getElementById('optimize-btn').disabled = selectedPatientIds.size === 0;
+  document.getElementById('status-msg').textContent = selectedPatientIds.size
+    ? selectedPatientIds.size + ' patient(s) selected — recalculating route…'
+    : 'Select patients from the list to build a route.';
+
+  clearTimeout(customDebounceTimer);
+  if (selectedPatientIds.size === 0) { clearRoute(); return; }
+  customDebounceTimer = setTimeout(() => {
+    const chosen = patientFeatures.filter(f => selectedPatientIds.has(f.properties.registration_number));
+    computeAndDrawRoute(chosen);
+  }, CUSTOM_DEBOUNCE_MS);
+}
+
+// ---------------------------------------------------------------------
+// NORMALIZATION (mirrors prepare_patient_routes.py, so display is correct
+// even before Python has re-run — only ASSIGNED_DAY needs that offline step)
+// ---------------------------------------------------------------------
+function normalizeMobility(raw) {
+  const r = (raw || '').trim().toLowerCase().replace(/\s+/g, '');
+  if (r === 'bedbound') return 'Bedbound';
+  if (r === 'chairbound') return 'Chairbound';
+  if (r === 'mobile') return 'Mobile';
+  return 'Unknown';
+}
+function normalizeCase(raw) {
+  const r = (raw || '').trim().toUpperCase();
+  if (r === 'CA') return 'CA';
+  if (r === 'NON CA') return 'NON CA';
+  return 'Unknown';
+}
+function statusFor(dateOfDeath) {
+  return (dateOfDeath || '').trim() ? 'Deceased' : 'Active';
+}
+
+// ---------------------------------------------------------------------
+// LOAD DATA — hospital is a small static point; patients load live from
+// the Google Sheet so any edit or new "save to roster" submission shows up
+// on refresh without a separate export/upload step.
+// ---------------------------------------------------------------------
+fetch('hospital_depot.geojson').then(r => r.json()).then(depot => {
   const d = depot.features[0];
   hospitalLatLng = L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]);
-  hospitalMarker = L.circleMarker(hospitalLatLng, {
-    radius: 9, fillColor: '#0f3d3e', color: '#000', weight: 1.5, fillOpacity: 1
-  }).addTo(map).bindPopup('<b>' + d.properties.name + '</b><br>Depot');
-
-  patientFeatures = patients.features;
-  refreshPatientMarkers();
-
-  const bounds = L.latLngBounds([hospitalLatLng]);
-  patientFeatures.forEach(f => bounds.extend([f.geometry.coordinates[1], f.geometry.coordinates[0]]));
-  map.fitBounds(bounds, { padding: [30, 30] });
+  hospitalMarker = L.circleMarker(hospitalLatLng, { radius: 9, fillColor: '#0f3d3e', color: '#000', weight: 1.5, fillOpacity: 1 })
+    .addTo(map).bindPopup('<b>' + d.properties.name + '</b><br>Depot');
+  fetchPatientsFromSheet(true);
 }).catch(err => {
-  console.error('Failed to load data files:', err);
-  document.getElementById('status-msg').textContent =
-    'Could not load hospital_depot.geojson / patients_all.geojson. Make sure both sit next to this HTML file.';
+  console.error('Failed to load hospital_depot.geojson:', err);
+  document.getElementById('status-msg').textContent = 'Could not load hospital_depot.geojson.';
 });
 
-document.getElementById('cb-deceased').addEventListener('change', e => {
-  showDeceased = e.target.checked;
-  refreshPatientMarkers();
-});
+function fetchPatientsFromSheet(isInitialLoad) {
+  const statusEl = document.getElementById('sheet-status');
+  statusEl.textContent = 'Loading from Google Sheet…';
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(SHEET_RANGE)}?key=${GOOGLE_SHEETS_API_KEY}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.values || data.values.length < 2) throw new Error('Sheet returned no data rows');
+
+      const [headerRow, ...dataRows] = data.values;
+      const colIndex = {};
+      headerRow.forEach((h, i) => { colIndex[String(h).trim()] = i; });
+      const get = (row, name) => (colIndex[name] !== undefined ? (row[colIndex[name]] || '') : '');
+
+      const features = [];
+      dataRows.forEach(row => {
+        const lat = parseFloat(get(row, 'latitude'));
+        const lon = parseFloat(get(row, 'longitude'));
+        if (isNaN(lat) || isNaN(lon)) return; // skip rows without valid coordinates
+
+        const mobility = normalizeMobility(get(row, 'TYPE_OF_PATIENT'));
+        features.push({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [lon, lat] },
+          properties: {
+            name: get(row, 'NAME') || '(unnamed)',
+            registration_number: get(row, 'REGISTRATION_NUMBER') || (get(row, 'NAME') + '|' + lat + ',' + lon),
+            mobility: mobility,
+            case_type: normalizeCase(get(row, 'CASE')),
+            diagnosis: get(row, 'DIAGNOSIS'),
+            address: get(row, 'ADDRESS'),
+            phone: get(row, 'PHONE_NUMBER'),
+            status: statusFor(get(row, 'DATE_OF_DEATH')),
+            date_of_death: get(row, 'DATE_OF_DEATH'),
+            frequency_tier: get(row, 'FREQUENCY_TIER') || (mobility === 'Unknown' ? 'Needs Review' : ''),
+            // ASSIGNED_DAY only exists once prepare_patient_routes.py has
+            // written it back via the Apps Script "sync_schedule" action —
+            // until then, this patient is usable in Custom selection mode
+            // but won't appear under any day tab.
+            assigned_day: get(row, 'ASSIGNED_DAY') || ''
+          }
+        });
+      });
+
+      patientFeatures = features;
+      refreshPatientMarkers();
+      renderChecklist(document.getElementById('patient-search').value);
+
+      if (isInitialLoad) {
+        const bounds = L.latLngBounds([hospitalLatLng]);
+        patientFeatures.forEach(f => bounds.extend([f.geometry.coordinates[1], f.geometry.coordinates[0]]));
+        map.fitBounds(bounds, { padding: [30, 30] });
+      }
+
+      statusEl.textContent = 'Loaded ' + features.length + ' patients from the Sheet just now.';
+    })
+    .catch(err => {
+      console.error('Sheet read error:', err);
+      statusEl.textContent = 'Could not load from the Sheet — check SPREADSHEET_ID / API key / sharing settings.';
+    });
+}
+window.fetchPatientsFromSheet = fetchPatientsFromSheet;
+
+document.getElementById('cb-deceased').addEventListener('change', e => { showDeceased = e.target.checked; refreshPatientMarkers(); });
 
 function refreshPatientMarkers() {
   Object.values(patientMarkers).forEach(m => map.removeLayer(m));
@@ -332,89 +429,71 @@ function refreshPatientMarkers() {
   patientFeatures.forEach(f => {
     const p = f.properties;
     if (p.status === 'Deceased' && !showDeceased) return;
-    if (selectedDay && p.status === 'Active' && p.assigned_day !== selectedDay) {
-      // dim patients not on the selected day rather than hiding them entirely
-    }
 
     const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
     const isDeceased = p.status === 'Deceased';
-    const onSelectedDay = selectedDay && p.assigned_day === selectedDay;
-    const dimmed = selectedDay && !onSelectedDay && !isDeceased;
+
+    let highlighted, dimmed;
+    if (mode === 'day') {
+      highlighted = selectedDay && p.assigned_day === selectedDay;
+      dimmed = selectedDay && !highlighted && !isDeceased;
+    } else {
+      highlighted = selectedPatientIds.has(p.registration_number);
+      dimmed = selectedPatientIds.size > 0 && !highlighted && !isDeceased;
+    }
 
     const marker = L.circleMarker(latlng, {
-      radius: onSelectedDay ? 8 : 6,
+      radius: highlighted ? 8 : 6,
       fillColor: isDeceased ? '#7f8c8d' : (MOBILITY_COLOR[p.mobility] || MOBILITY_COLOR.Unknown),
-      color: '#000',
-      weight: 1,
-      fillOpacity: dimmed ? 0.25 : 0.9
+      color: '#000', weight: 1, fillOpacity: dimmed ? 0.25 : 0.9
     }).addTo(map);
 
-    marker.bindPopup(
-      '<b>' + p.name + '</b><br>' +
-      p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' +
-      p.diagnosis + '<br>' +
-      '<small>' + p.address + '</small>'
-    );
-
+    marker.bindPopup('<b>' + p.name + '</b><br>' + p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' + p.diagnosis + '<br><small>' + p.address + '</small>');
     patientMarkers[p.registration_number] = marker;
   });
 }
 
 // ---------------------------------------------------------------------
-// ROUTE OPTIMIZATION (ORS Optimization endpoint = VROOM under the hood)
+// ROUTE OPTIMIZATION (shared by day mode and custom mode)
 // ---------------------------------------------------------------------
-document.getElementById('optimize-btn').addEventListener('click', optimizeRoute);
+document.getElementById('optimize-btn').addEventListener('click', () => {
+  if (mode === 'day') {
+    if (!selectedDay) return;
+    const todays = patientFeatures.filter(f => f.properties.status === 'Active' && f.properties.assigned_day === selectedDay);
+    computeAndDrawRoute(todays);
+  } else {
+    const chosen = patientFeatures.filter(f => selectedPatientIds.has(f.properties.registration_number));
+    computeAndDrawRoute(chosen);
+  }
+});
 
-function optimizeRoute() {
-  if (!hospitalLatLng || !selectedDay) return;
-
-  const todaysPatients = patientFeatures.filter(
-    f => f.properties.status === 'Active' && f.properties.assigned_day === selectedDay
-  );
-
-  if (todaysPatients.length === 0) {
-    document.getElementById('status-msg').textContent = 'No active patients scheduled ' + selectedDay + '.';
+function computeAndDrawRoute(patients) {
+  if (!hospitalLatLng || patients.length === 0) {
+    document.getElementById('status-msg').textContent = 'No patients to route.';
     return;
   }
 
   document.getElementById('status-msg').textContent = 'Optimizing stop order…';
   document.getElementById('optimize-btn').disabled = true;
 
-  const jobs = todaysPatients.map((f, idx) => ({
-    id: idx + 1,
-    location: [f.geometry.coordinates[0], f.geometry.coordinates[1]]
-  }));
-
+  const jobs = patients.map((f, idx) => ({ id: idx + 1, location: [f.geometry.coordinates[0], f.geometry.coordinates[1]] }));
   const depotCoord = [hospitalLatLng.lng, hospitalLatLng.lat];
-
-  const optimizationBody = {
-    jobs: jobs,
-    vehicles: [{
-      id: 1,
-      profile: 'driving-car',
-      start: depotCoord,
-      end: depotCoord
-    }]
-  };
 
   fetch('https://api.openrouteservice.org/optimization', {
     method: 'POST',
     headers: { 'Authorization': ORS_API_KEY, 'Content-Type': 'application/json' },
-    body: JSON.stringify(optimizationBody)
+    body: JSON.stringify({ jobs: jobs, vehicles: [{ id: 1, profile: 'driving-car', start: depotCoord, end: depotCoord }] })
   })
     .then(res => res.json())
     .then(data => {
-      if (!data.routes || data.routes.length === 0) {
-        throw new Error('No route returned from optimization API');
-      }
+      if (!data.routes || data.routes.length === 0) throw new Error('No route returned from optimization API');
       const steps = data.routes[0].steps.filter(s => s.type === 'job');
-      const orderedPatients = steps.map(s => todaysPatients[s.id - 1]);
+      const orderedPatients = steps.map(s => patients[s.id - 1]);
       drawOptimizedRoute(orderedPatients);
     })
     .catch(err => {
       console.error('Optimization error:', err);
-      document.getElementById('status-msg').textContent =
-        'Optimization request failed. Check the API key and quota, then try again.';
+      document.getElementById('status-msg').textContent = 'Optimization request failed. Check the API key and quota, then try again.';
       document.getElementById('optimize-btn').disabled = false;
     });
 }
@@ -433,10 +512,8 @@ function drawOptimizedRoute(orderedPatients) {
   })
     .then(res => res.json())
     .then(data => {
-      if (!data.features || data.features.length === 0) {
-        throw new Error('No route geometry returned');
-      }
-      clearRoute();
+      if (!data.features || data.features.length === 0) throw new Error('No route geometry returned');
+      clearRoute(true);
       routeLayer = L.geoJSON(data, { style: { color: '#0f6e56', weight: 5 } }).addTo(map);
 
       const summary = data.features[0].properties.summary;
@@ -446,20 +523,18 @@ function drawOptimizedRoute(orderedPatients) {
       const group = L.featureGroup([routeLayer, hospitalMarker]);
       map.fitBounds(group.getBounds(), { padding: [30, 30] });
 
-      document.getElementById('status-msg').textContent =
-        'Route optimized for ' + selectedDay + '.';
+      document.getElementById('status-msg').textContent = 'Route optimized for ' + orderedPatients.length + ' stop(s).';
       document.getElementById('optimize-btn').disabled = false;
     })
     .catch(err => {
       console.error('Directions error:', err);
-      document.getElementById('status-msg').textContent =
-        'Could not draw route geometry. Stop order below is still valid.';
+      document.getElementById('status-msg').textContent = 'Could not draw route geometry. Stop order below is still valid.';
       renderStopList(orderedPatients, null, null);
       document.getElementById('optimize-btn').disabled = false;
     });
 }
 
-function clearRoute() {
+function clearRoute(keepStatusMsg) {
   if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
   stopMarkersLayer.clearLayers();
   document.getElementById('stop-list').innerHTML = '';
@@ -496,17 +571,13 @@ function renderStopList(orderedPatients, segments, summary) {
       const marker = patientMarkers[p.registration_number];
       if (marker) marker.openPopup();
     };
-
     listEl.appendChild(li);
 
     L.marker([f.geometry.coordinates[1], f.geometry.coordinates[0]], {
       icon: L.divIcon({
         className: '',
-        html: '<div style="background:#0f6e56;color:white;border-radius:50%;width:20px;height:20px;' +
-              'line-height:20px;text-align:center;font-size:11px;font-weight:600;border:1px solid #fff;">' +
-              (idx + 1) + '</div>',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
+        html: '<div style="background:#0f6e56;color:white;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:11px;font-weight:600;border:1px solid #fff;">' + (idx + 1) + '</div>',
+        iconSize: [20, 20], iconAnchor: [10, 10]
       })
     }).addTo(stopMarkersLayer);
   });
@@ -520,6 +591,105 @@ function renderStopList(orderedPatients, segments, summary) {
       '<div><b>Stops:</b> ' + orderedPatients.length + '</div>';
   }
 }
+
+// ---------------------------------------------------------------------
+// NEW LOCATION: click map or enter coordinates, route straight to hospital
+// (retains the WWS "Go to Coordinates" behavior, fixed destination = hospital)
+// ---------------------------------------------------------------------
+map.on('click', e => handleNewLocation(e.latlng));
+
+function goToCoordinates() {
+  const lat = parseFloat(document.getElementById('lat-input').value.trim());
+  const lng = parseFloat(document.getElementById('lng-input').value.trim());
+  if (isNaN(lat) || isNaN(lng)) { alert('Please enter valid numeric latitude and longitude.'); return; }
+  const latlng = L.latLng(lat, lng);
+  map.setView(latlng, 13);
+  handleNewLocation(latlng);
+}
+window.goToCoordinates = goToCoordinates;
+
+function handleNewLocation(latlng) {
+  if (!hospitalLatLng) { alert('Hospital location not loaded yet.'); return; }
+  pendingNewLocation = { lat: latlng.lat, lng: latlng.lng };
+
+  if (newLocationMarker) map.removeLayer(newLocationMarker);
+  newLocationMarker = L.marker(latlng, {
+    icon: L.divIcon({ className: '', html: '<div style="width:14px;height:14px;border-radius:50%;background:#2c3e93;border:2px solid white;"></div>', iconSize: [14, 14], iconAnchor: [7, 7] })
+  }).addTo(map).bindPopup('New location').openPopup();
+
+  if (newLocationRouteLayer) { map.removeLayer(newLocationRouteLayer); newLocationRouteLayer = null; }
+  document.getElementById('new-location-result').style.display = 'none';
+  document.getElementById('show-save-form-btn').style.display = 'none';
+  document.getElementById('save-form').style.display = 'none';
+
+  const coordinates = [[latlng.lng, latlng.lat], [hospitalLatLng.lng, hospitalLatLng.lat]];
+  fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+    method: 'POST',
+    headers: { 'Authorization': ORS_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ coordinates: coordinates })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.features || data.features.length === 0) throw new Error('No route returned');
+      newLocationRouteLayer = L.geoJSON(data, { style: { color: '#2c3e93', weight: 4, dashArray: '6 6' } }).addTo(map);
+
+      const summary = data.features[0].properties.summary;
+      const resultEl = document.getElementById('new-location-result');
+      resultEl.style.display = 'block';
+      resultEl.innerHTML =
+        '<b>To hospital:</b> ' + (summary.distance / 1000).toFixed(1) + ' km, ' + Math.round(summary.duration / 60) + ' min';
+
+      document.getElementById('show-save-form-btn').style.display = 'block';
+    })
+    .catch(err => {
+      console.error('New location routing error:', err);
+      document.getElementById('new-location-result').style.display = 'block';
+      document.getElementById('new-location-result').textContent = 'Could not compute route to hospital.';
+      document.getElementById('show-save-form-btn').style.display = 'block';
+    });
+}
+
+function toggleSaveForm() {
+  const form = document.getElementById('save-form');
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+window.toggleSaveForm = toggleSaveForm;
+
+function submitNewPatient() {
+  if (!pendingNewLocation) return;
+
+  const payload = {
+    name: document.getElementById('save-name').value.trim(),
+    mobility: document.getElementById('save-mobility').value,
+    case_type: document.getElementById('save-case').value,
+    diagnosis: document.getElementById('save-diagnosis').value.trim(),
+    address: document.getElementById('save-address').value.trim(),
+    phone: document.getElementById('save-phone').value.trim(),
+    latitude: pendingNewLocation.lat,
+    longitude: pendingNewLocation.lng
+  };
+
+  if (!payload.name) { alert('Please enter a patient name.'); return; }
+
+  const statusEl = document.getElementById('save-status');
+  statusEl.textContent = 'Saving to Google Sheet…';
+
+  // Apps Script web apps are called with mode:'no-cors' from static pages —
+  // this is fire-and-forget (no readable response), so we confirm optimistically.
+  fetch(SHEET_WEBAPP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    statusEl.textContent = 'Saved. Click "Refresh from Sheet" to see it on the map — usable right away in Custom selection, though it won\'t get a scheduled day until prepare_patient_routes.py re-runs.';
+    document.getElementById('save-form').style.display = 'none';
+  }).catch(err => {
+    console.error('Sheet write error:', err);
+    statusEl.textContent = 'Could not reach the Google Sheet. Check SHEET_WEBAPP_URL and your connection.';
+  });
+}
+window.submitNewPatient = submitNewPatient;
 </script>
 </body>
 </html>
