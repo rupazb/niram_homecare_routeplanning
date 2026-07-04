@@ -37,14 +37,14 @@ from collections import defaultdict
 #   File > Share > Publish to web > select the patients tab > CSV > Publish
 # (a plain "export?format=csv" link works too, but only if the sheet is
 # shared as "Anyone with the link — Viewer"; Publish to web is more reliable).
-SHEET_CSV_EXPORT_URL = ""  # e.g. "https://docs.google.com/spreadsheets/d/e/XXXXX/pub?output=csv"
+SHEET_CSV_EXPORT_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQAXC6Tw2gY3dys0S9pL6QE78idoVMtjw3g8x575fwg821LhkKsVdZdT168wdsdUptQb6ziZ758mcx6/pub?gid=0&single=true&output=csv"  # e.g. "https://docs.google.com/spreadsheets/d/e/XXXXX/pub?output=csv"
 INPUT_CSV = "/mnt/user-data/uploads/MASTER_DATA_PATIENTS.csv"  # fallback if the URL above is blank
 
 # Apps Script Web App URL (see google_apps_script.gs) — used to write the
 # computed FREQUENCY_TIER / ASSIGNED_DAY columns back into the Sheet so the
 # dashboard can read a fully-scheduled roster straight from Sheets. Leave
 # blank to skip write-back (outputs will still be written locally either way).
-SHEET_WEBAPP_URL = ""  # e.g. "https://script.google.com/macros/s/XXXXX/exec"
+SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxdycTVX-sX7ICEhVLX4OZDUPUiMz83WMFuo-LF6u5f6vOnbzNLJM6IkdtOuz_Jb2-04g/exec"  # e.g. "https://script.google.com/macros/s/XXXXX/exec"
 
 OUTPUT_DIR = "/mnt/user-data/outputs"
 
