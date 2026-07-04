@@ -1,4 +1,4 @@
-# Niram Ambulance Route Planner — README
+# Niram Ambulance Route Planner - README
 
 Weekly home-visit route planning for Niram Palliative Care Center's single ambulance,
 built on the same Leaflet-based architecture as the WWS Locator Tool.
