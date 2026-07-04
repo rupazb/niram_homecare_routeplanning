@@ -1,0 +1,47 @@
+SL_NO,REGISTRATION_NUMBER,NAME,GENDER,AGE,DATE_OF_ENROLLMENT,DIAGNOSIS,TYPE_OF_PATIENT,CASE,DATE_OF_DEATH,ADDRESS,PHONE_NUMBER,latitude,longitude,MOBILITY_NORMALIZED,CASE_NORMALIZED,STATUS,FREQUENCY_TIER,ASSIGNED_DAY
+4,RIMH250004,Mr. Ohilesh T J,Male,53,09.12.2025,CVA Left Hemiplegia,Chair bound,NON CA,,Shri sharadamba trust samaja seva bhavana buliding  Tumkur,9.19946E+11,13.33642078947315,77.13280580120131,Chairbound,NON CA,Active,Fortnightly,Thursday
+8,RIMH250008,Mrs. Manjula devi,Female,65,09.12.2025,Bereavement Care,Mobile,NON CA,,Shri sharadamba trust samaja seva bhavana buliding  Tumkur,9.16363E+11,13.33642078947315,77.13280580120131,Mobile,NON CA,Active,Monthly,Friday
+12,RIMH250012,Mrs. Noor jhan,Female,75,02.01.2026,CA GB with Liver mets,Mobile,CA,,Shiva ganga petrol bunk oposite sira road Tumkur.,9.19739E+11,13.349786032931364,77.12388180859878,Mobile,CA,Active,Monthly,Wednesday
+24,RIMH250024,Mr. Gangaiha,Male,60,29.01.2026,"Ischemic heart disease CVA left Hemiparesis,UMN Facial palsy, HTN  Aphasia",Bed bound,NON CA,,1st main 1st cross hanmanthpura Tumkur 572103,9.19881E+11,13.331852356348422,77.11464902023712,Bedbound,NON CA,Active,Weekly,Wednesday
+25,RIMH250025,Mr. Venkata Krishna,Male,84,31.01.2026,"DM,HTN",Mobile,NON CA,,Sri sharadhamba trust samaja seva bhavana building prashanth nagar batwadi Tumkur,9.16363E+11,13.33642078947315,77.13280580120131,Mobile,NON CA,Active,Monthly,Friday
+33,RIMH260035,Mrs. Venkatamma,Female,85,30.01.2026,"DM,HTN",Mobile,NON CA,,Sri Sharadamba trust samaja seva bhavana building prashanth nagar.,9.19946E+11,13.33642078947315,77.13280580120131,Mobile,NON CA,Active,Monthly,Friday
+34,RIMH260036,Mrs. Mamatha,Female,37,28.02.2026,Neurofibromatosis posterior mediastinal Tumour,Chairbound,CA,28.02.2026,"Nagavalli, hebbur, tumkur",9.19148E+11,13.217964,77.056942,Chairbound,CA,Deceased,Fortnightly,
+36,RIMH260038,Mrs. Nafeesa,Female,45,05.03.2026,CA Right Buccal Muccosa,Bedbound,CA,06.03.2026,"
+Ratik ahamed hirehalli
+Post hirehalli tumkur",9.19743E+11,13.287206,77.189037,Bedbound,CA,Deceased,Weekly,
+37,RIMH260039,Mrs. Savithramma,Female,87,05.03.2026,"DM,HTN, Bed sore unstagable Eschar",Bedbound,NON CA,29.03.2026,"Doddmane nursing home, madilu hospital next house. 
+N S medical house.",9.19743E+11,13.340375,77.111094,Bedbound,NON CA,Deceased,Weekly,
+38,RIMH260040,Mrs. Nagamma,Female,63,06.03.2026,CA Lungs with brain mets,Mobile,CA,,Tarur post sira taluk VTC Tarur gollarahatti,9.18106E+11,13.611676,76.984721,Mobile,CA,Active,Monthly,Monday
+39,RIMH260041,Mr. H V Rudraiaha,Male,79,06.03.2026,Hepato cellular CA with bone and lung mets Compression fracture D11 and L2 Ascites Bilateral plural effusion,Bedbound,CA,08.03.2026,Veerabadraiaha Hanchihalli Bramhasandra,9.19164E+11,13.426345,77.080319,Bedbound,CA,Deceased,Weekly,
+41,RIMH260043,Mr. A R Manjunath,Male,52,09.03.2026,"DM type 2  Right hemiparasis, HTN",Mobile,,,Rangaswamyaiaha A M palya Sira gate tumkur.,9.18792E+11,13.361088,77.096556,Mobile,Unknown,Active,Monthly,Tuesday
+42,RIMH260044,Mrs. Gangamma,Female,87,09.03.2026,"To grade burns , HTN",Bedbound,NON CA,,"Aralimaradha palya Sira gate, tumkur.",9.18547E+11,13.360387,77.096026,Bedbound,NON CA,Active,Weekly,Monday
+43,RIMH260045,Mr. Rajanna,Male,63,10.03.2026,"DM type 2, HTN, CA prostate, local infiltration metastasis to lymph node, lung and bone.",Bedbound,CA,12.05.2026,"Kodihalli, hagalavadi, (post) Gubbi (Tq), hagalavadi (H)",9.19945E+11,13.504057,76.77407,Bedbound,CA,Deceased,Weekly,
+46,RIMH260049,Mr. Narasimha Murthy,Male,52,12.03.2026,CA Base of tounge ,Mobile,CA,14.03.2026,"Near Anjineya , devastana , Siddharthanagara (P) Heggere.",9.17899E+11,13.336492,77.049845,Mobile,CA,Deceased,Monthly,
+47,RIMH260050,Mrs. Lakshmamma,Female,55,13.03.2026,Leiomyosarcoma uterus with liver and lung mets,Mobile,CA,,Belgumba thota ganesh nagara belgumba VTC belgumba,9.19165E+11,13.35213,77.129227,Mobile,CA,Active,Monthly,Wednesday
+48,RIMH260051,Mrs. Puttamma,Female,55,18.03.2026,"C.A Breast with lungs,bones with livermets",Bedbound,CA,26.03.2026,Bheema Sandra Bellavi road,9.1776E+11,13.347074,77.071736,Bedbound,CA,Deceased,Weekly,
+49,RIMH260052,Mr. Kavalappa,Male,76,23.03.2026,CA prostate with bone mets,Mobile,CA,,Bharathi nagara tumkur near abahya anjineya temple near.,9.19009E+11,13.337158,77.127723,Mobile,CA,Active,Monthly,Wednesday
+51,RIMH260054,Mrs. Ganganarasamma,Female,60,30.03.2026,"DM, HTN, right hemiplegia",Mobile,NON CA,,Arvind Nagar sathya parameshwari temple Tumkur,9.19902E+11,13.34485,77.094808,Mobile,NON CA,Active,Monthly,Tuesday
+52,RIMH260055,"Mr. Mohammed munavar Pasha
+",Male,56,31.03.2026,CVA right hemiplegia & aphasia,Chairbound,NON CA,,Neelamangala taluk sompura hobi Lakkur,9.1988E+11,13.238209,77.244753,Chairbound,NON CA,Active,Fortnightly,Thursday
+53,RIMH260056,Mr. Mahadevappa,Male,60,31.03.2026,CA Rectum with liver mets and lymphnode mets,Mobile,CA,,Hosalaihana totha batwadi Tumkur,9.18431E+11,13.332945,77.131185,Mobile,CA,Active,Monthly,Thursday
+55,RIMH260058,Mrs.Jayamma,Female,85,07.04.2026,Frailty,Bedbound,NON CA,,"Samphadare matta, Bapuji school Sri Ramanagara Tumkur",91 99017 73044,13.344038881578816,77.10717208465744,Bedbound,NON CA,Active,Weekly,Wednesday
+58,RIMH260061,Mrs. Dilshad Beegum,Female,71,"
+15.04.2026","Dm, HTN,CA breast with Mets",Mobile,,,"Kothi topu,belagumba road kollapuradamma, temple near",9.18862E+11,13.34212,77.114051,Mobile,Unknown,Active,Monthly,Tuesday
+59,RIMH260062,Mr vishweshwara G,Male,74,20.04.2026 ,"IHD, DM ",Bedbound,NON CA,15.06.2026,Jois chikpate tumkur,9.19381E+11,13.347856,77.095443,Bedbound,NON CA,Deceased,Weekly,
+62,RIMH260065,Mr Raju,Male,64,23.04.2026 ,"Dm, BK Amputations",Mobile,NON CA,,5ht cross batavadi Hoysalayanatota,9.19917E+11,13.332872,77.131102,Mobile,NON CA,Active,Monthly,Thursday
+76,RIMH260079,Mrs. Lakshmamma,Female,56,11.05.2026 ,CVA WITH LEFT HEMIPLAGIA,Bedbound,NON CA,,MARALURU DINNE,9.19987E+11,13.320226,77.101362,Bedbound,NON CA,Active,Weekly,Friday
+77,RIMH260080,Mrs. Shivamma,Female,60,19.05.2026 ,CVA,Bedbound,NON CA,,"Hanchihalli, Bramhasandra, tumkur",9.19972E+11,13.419613,77.080303,Bedbound,NON CA,Active,Weekly,Monday
+78,RIMH260081,Mrs. B Meriamma,Female,71,25.05.2026 ,"HTN, DM, Cellulities with sepsis",Mobile,NON CA,,"13 th cross ,janatha colony,Maralur, Tumkur",9.17997E+11,13.317125,77.103481,Mobile,NON CA,Active,Monthly,Monday
+79,RIMH260082,Mr. Chandrappa,Male,65,01.06.2026,CVA with Right Hemiparasis ,,NON CA,,"Chikkagundagal , Tumkur( T) , Tumkur (D)",+91 90360 63397,13.437344,77.145204,Unknown,NON CA,Active,Needs Review,
+80,RIMH260083,Mr. Mahalingaiah,Male,72,04.06.2026,CVA,,NON CA,,Sopanahalli Nittur Hobli Gubbi (T )Tumkur (D),+91 83103 03546,13.337455,76.810658,Unknown,NON CA,Active,Needs Review,
+82,RIMH260085,Mrs. Roopaudhaykumar Megeri,Female,65,09.06.2026,E4 V5 M6 Right Hemiperesis,,NON CA,,"BahaNIlaya 2nd main ,Sriramnagar new extension Tumkur.",9049877569,13.347378,77.107268,Unknown,NON CA,Active,Needs Review,
+83,RIMH260086,Mrs. Sarojamma,Female,69,09.06.2026,CVA LEFT SIDED HEMIPARESIS K/C/O DM TYPE 2 HTN,Bedbound,NON CA,11.06.2026,sri revanna siddeshwara nilaya banashankari 2 nd stage 1 st main 2 nd cross netaji subhas chandra bose road tumukur,9.17619E+11,13.325966,77.102738,Bedbound,NON CA,Deceased,Weekly,
+84,RIMH260087,Mrs. Puttalakshmi,Female,61,10.06.2026,"CCF,HTN,DM ,OSA and Hypothyrodism",Chairbound,NON CA,,"House No 125, Anjeneyaswamy Temple Road, Tumkur.",9.1988E+11,13.345760,77.106613,Chairbound,NON CA,Active,Fortnightly,Tuesday
+85,RIMH260088,Mrs. T V INDIRA,Female,85,11.06.2026,Frailty,Chairbound,NON CA,,1st main 1st cross sriram Nagar Tumkur,9.19353E+11,13.347491,77.106376,Chairbound,NON CA,Active,Fortnightly,Tuesday
+87,RIMH260090,Mr. Muneer Ahamed,Male,57,12.06.2026,"Hypertension
+CVA with left hemiplagia
+Astrocycloma (GF4)
+Fracture Left LL",,NON CA,,"1st cross,Pakir Palya, Ashoka Nagara, Tumkur",9.19964E+11,13.334382,77.116765,Unknown,NON CA,Active,Needs Review,
+106,RIMH260109,Mrs. Ratnamma,Female,75,30.06.2026,Frozen Shoulder,Mobile,NON CA,,Sri Sharadamba Trust samaja seva bhavana building prashanth nagara,9.19946E+11,13.33642078947315,77.13280580120131,Mobile,NON CA,Active,Monthly,Thursday
+110,RIMH260113,Mrs. GALAHANUMAKKA,Female,61,30.06.2026,CA Ovary with CVA,bedbound,CA,,"Gundenahalli, Nelamangala (T), Benglore rural",9.16361E+11,13.19261,77.28015,Bedbound,CA,Active,Weekly,Friday
+111,RIMH260114,Mr. Jayanna,Male,65,01.06.2026,Scabies,Mobile,NON CA,,"Sharadamba trust, Tumkur",9.19946E+11,13.33642078947315,77.13280580120131,Mobile,NON CA,Active,Monthly,Monday

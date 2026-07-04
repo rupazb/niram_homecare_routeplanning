@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Niram Ambulance Route Planner</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+      color: #1c2a2f;
+    }
+    #app {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+    #sidebar {
+      width: 340px;
+      height: 100%;
+      overflow-y: auto;
+      background: #f7f8f6;
+      border-left: 1px solid #d8ddd9;
+      box-sizing: border-box;
+      padding: 18px 16px 40px;
+    }
+    #sidebar h1 {
+      font-size: 17px;
+      margin: 0 0 2px;
+      color: #0f3d3e;
+    }
+    #sidebar .subtitle {
+      font-size: 12px;
+      color: #6b7772;
+      margin: 0 0 18px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #6b7772;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    #day-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .day-btn {
+      flex: 1 1 auto;
+      padding: 7px 4px;
+      font-size: 12px;
+      border: 1px solid #c7d0cc;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #1c2a2f;
+      min-width: 56px;
+      text-align: center;
+    }
+    .day-btn.active {
+      background: #0f6e56;
+      border-color: #0f6e56;
+      color: white;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    #optimize-btn {
+      width: 100%;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #0f6e56;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #optimize-btn:disabled {
+      background: #a9b3ae;
+      cursor: not-allowed;
+    }
+    #summary {
+      font-size: 12px;
+      background: white;
+      border: 1px solid #d8ddd9;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-top: 10px;
+      display: none;
+    }
+    #summary div {
+      margin: 2px 0;
+    }
+    #stop-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .stop-card {
+      background: white;
+      border: 1px solid #d8ddd9;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .stop-card:hover {
+      border-color: #0f6e56;
+    }
+    .stop-seq {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      background: #0f6e56;
+      color: white;
+      border-radius: 50%;
+      font-size: 11px;
+      margin-right: 6px;
+    }
+    .stop-name {
+      font-weight: 600;
+    }
+    .stop-meta {
+      color: #6b7772;
+      margin-top: 3px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
+    .badge-bed { background: #f9d8d8; color: #7a1f1f; }
+    .badge-chair { background: #f9ecd0; color: #7a5a0c; }
+    .badge-mobile { background: #d7ece4; color: #0f5a44; }
+    #status-msg {
+      font-size: 12px;
+      color: #6b7772;
+      margin-top: 8px;
+    }
+    .legend-box {
+      font-size: 12px;
+      background: white;
+      padding: 8px 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .legend-row {
+      display: flex;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid #333;
+      display: inline-block;
+      margin-right: 7px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div id="map"></div>
+
+  <div id="sidebar">
+    <h1>Niram Ambulance Route Planner</h1>
+    <p class="subtitle">Weekly home-visit routing for the palliative care vehicle</p>
+
+    <div class="section">
+      <div class="section-label">Visit day</div>
+      <div id="day-tabs"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Map options</div>
+      <label class="toggle-row">
+        <input type="checkbox" id="cb-deceased"> Show deceased patients
+      </label>
+    </div>
+
+    <div class="section">
+      <button id="optimize-btn" disabled>Optimize today's route</button>
+      <div id="summary"></div>
+      <div id="status-msg">Select a day, then optimize.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Stop order</div>
+      <ul id="stop-list"></ul>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ---------------------------------------------------------------------
+// CONFIG
+// ---------------------------------------------------------------------
+const ORS_API_KEY = "YOUR_ORS_API_KEY"; // replace with your OpenRouteService key
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+const MOBILITY_COLOR = {
+  Bedbound: "#c0392b",
+  Chairbound: "#d68910",
+  Mobile: "#0f6e56",
+  Unknown: "#7f8c8d"
+};
+
+// ---------------------------------------------------------------------
+// STATE
+// ---------------------------------------------------------------------
+let map;
+let hospitalLatLng = null;
+let hospitalMarker = null;
+let patientFeatures = [];      // raw features from patients_all.geojson
+let patientMarkers = {};       // registration_number -> marker
+let selectedDay = null;
+let showDeceased = false;
+let routeLayer = null;
+let stopMarkersLayer = L.layerGroup();
+
+// ---------------------------------------------------------------------
+// MAP SETUP
+// ---------------------------------------------------------------------
+map = L.map('map', { zoomControl: false }).setView([13.35, 77.1], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+L.control.zoom({ position: 'bottomleft' }).addTo(map);
+stopMarkersLayer.addTo(map);
+
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function () {
+  const div = L.DomUtil.create('div', 'legend-box');
+  div.innerHTML = `
+    <b>Legend</b>
+    <div class="legend-row"><span class="legend-dot" style="background:#0f3d3e"></span>Hospital (depot)</div>
+    <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Bedbound}"></span>Bedbound</div>
+    <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Chairbound}"></span>Chairbound</div>
+    <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Mobile}"></span>Mobile</div>
+    <div class="legend-row"><span class="legend-dot" style="background:#7f8c8d"></span>Deceased</div>
+  `;
+  return div;
+};
+legend.addTo(map);
+
+// ---------------------------------------------------------------------
+// DAY TABS
+// ---------------------------------------------------------------------
+const dayTabsEl = document.getElementById('day-tabs');
+DAYS.forEach(day => {
+  const btn = document.createElement('button');
+  btn.className = 'day-btn';
+  btn.textContent = day.slice(0, 3);
+  btn.onclick = () => selectDay(day);
+  btn.dataset.day = day;
+  dayTabsEl.appendChild(btn);
+});
+
+function selectDay(day) {
+  selectedDay = day;
+  document.querySelectorAll('.day-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.day === day);
+  });
+  clearRoute();
+  refreshPatientMarkers();
+  document.getElementById('optimize-btn').disabled = false;
+  const count = patientFeatures.filter(f => f.properties.assigned_day === day).length;
+  document.getElementById('status-msg').textContent =
+    count + ' patient(s) scheduled ' + day + '. Click optimize to sequence the route.';
+}
+
+// ---------------------------------------------------------------------
+// LOAD DATA
+// ---------------------------------------------------------------------
+Promise.all([
+  fetch('hospital_depot.geojson').then(r => r.json()),
+  fetch('patients_all.geojson').then(r => r.json())
+]).then(([depot, patients]) => {
+  const d = depot.features[0];
+  hospitalLatLng = L.latLng(d.geometry.coordinates[1], d.geometry.coordinates[0]);
+  hospitalMarker = L.circleMarker(hospitalLatLng, {
+    radius: 9, fillColor: '#0f3d3e', color: '#000', weight: 1.5, fillOpacity: 1
+  }).addTo(map).bindPopup('<b>' + d.properties.name + '</b><br>Depot');
+
+  patientFeatures = patients.features;
+  refreshPatientMarkers();
+
+  const bounds = L.latLngBounds([hospitalLatLng]);
+  patientFeatures.forEach(f => bounds.extend([f.geometry.coordinates[1], f.geometry.coordinates[0]]));
+  map.fitBounds(bounds, { padding: [30, 30] });
+}).catch(err => {
+  console.error('Failed to load data files:', err);
+  document.getElementById('status-msg').textContent =
+    'Could not load hospital_depot.geojson / patients_all.geojson. Make sure both sit next to this HTML file.';
+});
+
+document.getElementById('cb-deceased').addEventListener('change', e => {
+  showDeceased = e.target.checked;
+  refreshPatientMarkers();
+});
+
+function refreshPatientMarkers() {
+  Object.values(patientMarkers).forEach(m => map.removeLayer(m));
+  patientMarkers = {};
+
+  patientFeatures.forEach(f => {
+    const p = f.properties;
+    if (p.status === 'Deceased' && !showDeceased) return;
+    if (selectedDay && p.status === 'Active' && p.assigned_day !== selectedDay) {
+      // dim patients not on the selected day rather than hiding them entirely
+    }
+
+    const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
+    const isDeceased = p.status === 'Deceased';
+    const onSelectedDay = selectedDay && p.assigned_day === selectedDay;
+    const dimmed = selectedDay && !onSelectedDay && !isDeceased;
+
+    const marker = L.circleMarker(latlng, {
+      radius: onSelectedDay ? 8 : 6,
+      fillColor: isDeceased ? '#7f8c8d' : (MOBILITY_COLOR[p.mobility] || MOBILITY_COLOR.Unknown),
+      color: '#000',
+      weight: 1,
+      fillOpacity: dimmed ? 0.25 : 0.9
+    }).addTo(map);
+
+    marker.bindPopup(
+      '<b>' + p.name + '</b><br>' +
+      p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' +
+      p.diagnosis + '<br>' +
+      '<small>' + p.address + '</small>'
+    );
+
+    patientMarkers[p.registration_number] = marker;
+  });
+}
+
+// ---------------------------------------------------------------------
+// ROUTE OPTIMIZATION (ORS Optimization endpoint = VROOM under the hood)
+// ---------------------------------------------------------------------
+document.getElementById('optimize-btn').addEventListener('click', optimizeRoute);
+
+function optimizeRoute() {
+  if (!hospitalLatLng || !selectedDay) return;
+
+  const todaysPatients = patientFeatures.filter(
+    f => f.properties.status === 'Active' && f.properties.assigned_day === selectedDay
+  );
+
+  if (todaysPatients.length === 0) {
+    document.getElementById('status-msg').textContent = 'No active patients scheduled ' + selectedDay + '.';
+    return;
+  }
+
+  document.getElementById('status-msg').textContent = 'Optimizing stop order…';
+  document.getElementById('optimize-btn').disabled = true;
+
+  const jobs = todaysPatients.map((f, idx) => ({
+    id: idx + 1,
+    location: [f.geometry.coordinates[0], f.geometry.coordinates[1]]
+  }));
+
+  const depotCoord = [hospitalLatLng.lng, hospitalLatLng.lat];
+
+  const optimizationBody = {
+    jobs: jobs,
+    vehicles: [{
+      id: 1,
+      profile: 'driving-car',
+      start: depotCoord,
+      end: depotCoord
+    }]
+  };
+
+  fetch('https://api.openrouteservice.org/optimization', {
+    method: 'POST',
+    headers: { 'Authorization': ORS_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(optimizationBody)
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.routes || data.routes.length === 0) {
+        throw new Error('No route returned from optimization API');
+      }
+      const steps = data.routes[0].steps.filter(s => s.type === 'job');
+      const orderedPatients = steps.map(s => todaysPatients[s.id - 1]);
+      drawOptimizedRoute(orderedPatients);
+    })
+    .catch(err => {
+      console.error('Optimization error:', err);
+      document.getElementById('status-msg').textContent =
+        'Optimization request failed. Check the API key and quota, then try again.';
+      document.getElementById('optimize-btn').disabled = false;
+    });
+}
+
+function drawOptimizedRoute(orderedPatients) {
+  const coordinates = [
+    [hospitalLatLng.lng, hospitalLatLng.lat],
+    ...orderedPatients.map(f => [f.geometry.coordinates[0], f.geometry.coordinates[1]]),
+    [hospitalLatLng.lng, hospitalLatLng.lat]
+  ];
+
+  fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+    method: 'POST',
+    headers: { 'Authorization': ORS_API_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ coordinates: coordinates })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.features || data.features.length === 0) {
+        throw new Error('No route geometry returned');
+      }
+      clearRoute();
+      routeLayer = L.geoJSON(data, { style: { color: '#0f6e56', weight: 5 } }).addTo(map);
+
+      const summary = data.features[0].properties.summary;
+      const segments = data.features[0].properties.segments;
+      renderStopList(orderedPatients, segments, summary);
+
+      const group = L.featureGroup([routeLayer, hospitalMarker]);
+      map.fitBounds(group.getBounds(), { padding: [30, 30] });
+
+      document.getElementById('status-msg').textContent =
+        'Route optimized for ' + selectedDay + '.';
+      document.getElementById('optimize-btn').disabled = false;
+    })
+    .catch(err => {
+      console.error('Directions error:', err);
+      document.getElementById('status-msg').textContent =
+        'Could not draw route geometry. Stop order below is still valid.';
+      renderStopList(orderedPatients, null, null);
+      document.getElementById('optimize-btn').disabled = false;
+    });
+}
+
+function clearRoute() {
+  if (routeLayer) { map.removeLayer(routeLayer); routeLayer = null; }
+  stopMarkersLayer.clearLayers();
+  document.getElementById('stop-list').innerHTML = '';
+  document.getElementById('summary').style.display = 'none';
+}
+
+function badgeFor(mobility) {
+  if (mobility === 'Bedbound') return '<span class="badge badge-bed">Bedbound</span>';
+  if (mobility === 'Chairbound') return '<span class="badge badge-chair">Chairbound</span>';
+  return '<span class="badge badge-mobile">Mobile</span>';
+}
+
+function renderStopList(orderedPatients, segments, summary) {
+  const listEl = document.getElementById('stop-list');
+  listEl.innerHTML = '';
+
+  orderedPatients.forEach((f, idx) => {
+    const p = f.properties;
+    const leg = segments ? segments[idx] : null;
+    const legDistKm = leg ? (leg.distance / 1000).toFixed(1) : '—';
+    const legMin = leg ? Math.round(leg.duration / 60) : '—';
+
+    const li = document.createElement('li');
+    li.className = 'stop-card';
+    li.innerHTML =
+      '<span class="stop-seq">' + (idx + 1) + '</span>' +
+      '<span class="stop-name">' + p.name + '</span>' + badgeFor(p.mobility) +
+      '<div class="stop-meta">' + p.diagnosis + '</div>' +
+      '<div class="stop-meta">' + legDistKm + ' km / ' + legMin + ' min from previous stop</div>';
+
+    li.onclick = () => {
+      const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
+      map.setView(latlng, 14);
+      const marker = patientMarkers[p.registration_number];
+      if (marker) marker.openPopup();
+    };
+
+    listEl.appendChild(li);
+
+    L.marker([f.geometry.coordinates[1], f.geometry.coordinates[0]], {
+      icon: L.divIcon({
+        className: '',
+        html: '<div style="background:#0f6e56;color:white;border-radius:50%;width:20px;height:20px;' +
+              'line-height:20px;text-align:center;font-size:11px;font-weight:600;border:1px solid #fff;">' +
+              (idx + 1) + '</div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      })
+    }).addTo(stopMarkersLayer);
+  });
+
+  if (summary) {
+    const summaryEl = document.getElementById('summary');
+    summaryEl.style.display = 'block';
+    summaryEl.innerHTML =
+      '<div><b>Total distance:</b> ' + (summary.distance / 1000).toFixed(1) + ' km</div>' +
+      '<div><b>Total drive time:</b> ' + Math.round(summary.duration / 60) + ' min</div>' +
+      '<div><b>Stops:</b> ' + orderedPatients.length + '</div>';
+  }
+}
+</script>
+</body>
+</html>

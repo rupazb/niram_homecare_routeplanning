@@ -1,0 +1,879 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mr. Ohilesh T J",
+        "registration_number": "RIMH250004",
+        "mobility": "Chairbound",
+        "case_type": "NON CA",
+        "diagnosis": "CVA Left Hemiplegia",
+        "address": "Shri sharadamba trust samaja seva bhavana buliding  Tumkur",
+        "phone": "9.19946E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Fortnightly",
+        "assigned_day": "Thursday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Manjula devi",
+        "registration_number": "RIMH250008",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "Bereavement Care",
+        "address": "Shri sharadamba trust samaja seva bhavana buliding  Tumkur",
+        "phone": "9.16363E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Friday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.12388180859878,
+          13.349786032931364
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Noor jhan",
+        "registration_number": "RIMH250012",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "CA GB with Liver mets",
+        "address": "Shiva ganga petrol bunk oposite sira road Tumkur.",
+        "phone": "9.19739E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Wednesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.11464902023712,
+          13.331852356348422
+        ]
+      },
+      "properties": {
+        "name": "Mr. Gangaiha",
+        "registration_number": "RIMH250024",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "Ischemic heart disease CVA left Hemiparesis,UMN Facial palsy, HTN  Aphasia",
+        "address": "1st main 1st cross hanmanthpura Tumkur 572103",
+        "phone": "9.19881E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Wednesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mr. Venkata Krishna",
+        "registration_number": "RIMH250025",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "DM,HTN",
+        "address": "Sri sharadhamba trust samaja seva bhavana building prashanth nagar batwadi Tumkur",
+        "phone": "9.16363E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Friday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Venkatamma",
+        "registration_number": "RIMH260035",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "DM,HTN",
+        "address": "Sri Sharadamba trust samaja seva bhavana building prashanth nagar.",
+        "phone": "9.19946E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Friday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.056942,
+          13.217964
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Mamatha",
+        "registration_number": "RIMH260036",
+        "mobility": "Chairbound",
+        "case_type": "CA",
+        "diagnosis": "Neurofibromatosis posterior mediastinal Tumour",
+        "address": "Nagavalli, hebbur, tumkur",
+        "phone": "9.19148E+11",
+        "status": "Deceased",
+        "date_of_death": "28.02.2026",
+        "frequency_tier": "Fortnightly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.189037,
+          13.287206
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Nafeesa",
+        "registration_number": "RIMH260038",
+        "mobility": "Bedbound",
+        "case_type": "CA",
+        "diagnosis": "CA Right Buccal Muccosa",
+        "address": "\r\nRatik ahamed hirehalli\r\nPost hirehalli tumkur",
+        "phone": "9.19743E+11",
+        "status": "Deceased",
+        "date_of_death": "06.03.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.111094,
+          13.340375
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Savithramma",
+        "registration_number": "RIMH260039",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "DM,HTN, Bed sore unstagable Eschar",
+        "address": "Doddmane nursing home, madilu hospital next house. \r\nN S medical house.",
+        "phone": "9.19743E+11",
+        "status": "Deceased",
+        "date_of_death": "29.03.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.984721,
+          13.611676
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Nagamma",
+        "registration_number": "RIMH260040",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "CA Lungs with brain mets",
+        "address": "Tarur post sira taluk VTC Tarur gollarahatti",
+        "phone": "9.18106E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Monday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.080319,
+          13.426345
+        ]
+      },
+      "properties": {
+        "name": "Mr. H V Rudraiaha",
+        "registration_number": "RIMH260041",
+        "mobility": "Bedbound",
+        "case_type": "CA",
+        "diagnosis": "Hepato cellular CA with bone and lung mets Compression fracture D11 and L2 Ascites Bilateral plural effusion",
+        "address": "Veerabadraiaha Hanchihalli Bramhasandra",
+        "phone": "9.19164E+11",
+        "status": "Deceased",
+        "date_of_death": "08.03.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.096556,
+          13.361088
+        ]
+      },
+      "properties": {
+        "name": "Mr. A R Manjunath",
+        "registration_number": "RIMH260043",
+        "mobility": "Mobile",
+        "case_type": "Unknown",
+        "diagnosis": "DM type 2  Right hemiparasis, HTN",
+        "address": "Rangaswamyaiaha A M palya Sira gate tumkur.",
+        "phone": "9.18792E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Tuesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.096026,
+          13.360387
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Gangamma",
+        "registration_number": "RIMH260044",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "To grade burns , HTN",
+        "address": "Aralimaradha palya Sira gate, tumkur.",
+        "phone": "9.18547E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Monday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.77407,
+          13.504057
+        ]
+      },
+      "properties": {
+        "name": "Mr. Rajanna",
+        "registration_number": "RIMH260045",
+        "mobility": "Bedbound",
+        "case_type": "CA",
+        "diagnosis": "DM type 2, HTN, CA prostate, local infiltration metastasis to lymph node, lung and bone.",
+        "address": "Kodihalli, hagalavadi, (post) Gubbi (Tq), hagalavadi (H)",
+        "phone": "9.19945E+11",
+        "status": "Deceased",
+        "date_of_death": "12.05.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.049845,
+          13.336492
+        ]
+      },
+      "properties": {
+        "name": "Mr. Narasimha Murthy",
+        "registration_number": "RIMH260049",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "CA Base of tounge ",
+        "address": "Near Anjineya , devastana , Siddharthanagara (P) Heggere.",
+        "phone": "9.17899E+11",
+        "status": "Deceased",
+        "date_of_death": "14.03.2026",
+        "frequency_tier": "Monthly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.129227,
+          13.35213
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Lakshmamma",
+        "registration_number": "RIMH260050",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "Leiomyosarcoma uterus with liver and lung mets",
+        "address": "Belgumba thota ganesh nagara belgumba VTC belgumba",
+        "phone": "9.19165E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Wednesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.071736,
+          13.347074
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Puttamma",
+        "registration_number": "RIMH260051",
+        "mobility": "Bedbound",
+        "case_type": "CA",
+        "diagnosis": "C.A Breast with lungs,bones with livermets",
+        "address": "Bheema Sandra Bellavi road",
+        "phone": "9.1776E+11",
+        "status": "Deceased",
+        "date_of_death": "26.03.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.127723,
+          13.337158
+        ]
+      },
+      "properties": {
+        "name": "Mr. Kavalappa",
+        "registration_number": "RIMH260052",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "CA prostate with bone mets",
+        "address": "Bharathi nagara tumkur near abahya anjineya temple near.",
+        "phone": "9.19009E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Wednesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.094808,
+          13.34485
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Ganganarasamma",
+        "registration_number": "RIMH260054",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "DM, HTN, right hemiplegia",
+        "address": "Arvind Nagar sathya parameshwari temple Tumkur",
+        "phone": "9.19902E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Tuesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.244753,
+          13.238209
+        ]
+      },
+      "properties": {
+        "name": "Mr. Mohammed munavar Pasha\n",
+        "registration_number": "RIMH260055",
+        "mobility": "Chairbound",
+        "case_type": "NON CA",
+        "diagnosis": "CVA right hemiplegia & aphasia",
+        "address": "Neelamangala taluk sompura hobi Lakkur",
+        "phone": "9.1988E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Fortnightly",
+        "assigned_day": "Thursday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.131185,
+          13.332945
+        ]
+      },
+      "properties": {
+        "name": "Mr. Mahadevappa",
+        "registration_number": "RIMH260056",
+        "mobility": "Mobile",
+        "case_type": "CA",
+        "diagnosis": "CA Rectum with liver mets and lymphnode mets",
+        "address": "Hosalaihana totha batwadi Tumkur",
+        "phone": "9.18431E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Thursday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.10717208465744,
+          13.344038881578816
+        ]
+      },
+      "properties": {
+        "name": "Mrs.Jayamma",
+        "registration_number": "RIMH260058",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "Frailty",
+        "address": "Samphadare matta, Bapuji school Sri Ramanagara Tumkur",
+        "phone": "91 99017 73044",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Wednesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.114051,
+          13.34212
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Dilshad Beegum",
+        "registration_number": "RIMH260061",
+        "mobility": "Mobile",
+        "case_type": "Unknown",
+        "diagnosis": "Dm, HTN,CA breast with Mets",
+        "address": "Kothi topu,belagumba road kollapuradamma, temple near",
+        "phone": "9.18862E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Tuesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.095443,
+          13.347856
+        ]
+      },
+      "properties": {
+        "name": "Mr vishweshwara G",
+        "registration_number": "RIMH260062",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "IHD, DM ",
+        "address": "Jois chikpate tumkur",
+        "phone": "9.19381E+11",
+        "status": "Deceased",
+        "date_of_death": "15.06.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.131102,
+          13.332872
+        ]
+      },
+      "properties": {
+        "name": "Mr Raju",
+        "registration_number": "RIMH260065",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "Dm, BK Amputations",
+        "address": "5ht cross batavadi Hoysalayanatota",
+        "phone": "9.19917E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Thursday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.101362,
+          13.320226
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Lakshmamma",
+        "registration_number": "RIMH260079",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "CVA WITH LEFT HEMIPLAGIA",
+        "address": "MARALURU DINNE",
+        "phone": "9.19987E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Friday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.080303,
+          13.419613
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Shivamma",
+        "registration_number": "RIMH260080",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "CVA",
+        "address": "Hanchihalli, Bramhasandra, tumkur",
+        "phone": "9.19972E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Monday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.103481,
+          13.317125
+        ]
+      },
+      "properties": {
+        "name": "Mrs. B Meriamma",
+        "registration_number": "RIMH260081",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "HTN, DM, Cellulities with sepsis",
+        "address": "13 th cross ,janatha colony,Maralur, Tumkur",
+        "phone": "9.17997E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Monday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.145204,
+          13.437344
+        ]
+      },
+      "properties": {
+        "name": "Mr. Chandrappa",
+        "registration_number": "RIMH260082",
+        "mobility": "Unknown",
+        "case_type": "NON CA",
+        "diagnosis": "CVA with Right Hemiparasis ",
+        "address": "Chikkagundagal , Tumkur( T) , Tumkur (D)",
+        "phone": "+91 90360 63397",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Needs Review",
+        "assigned_day": "UNASSIGNED \u2014 review mobility status"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.810658,
+          13.337455
+        ]
+      },
+      "properties": {
+        "name": "Mr. Mahalingaiah",
+        "registration_number": "RIMH260083",
+        "mobility": "Unknown",
+        "case_type": "NON CA",
+        "diagnosis": "CVA",
+        "address": "Sopanahalli Nittur Hobli Gubbi (T )Tumkur (D)",
+        "phone": "+91 83103 03546",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Needs Review",
+        "assigned_day": "UNASSIGNED \u2014 review mobility status"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.107268,
+          13.347378
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Roopaudhaykumar Megeri",
+        "registration_number": "RIMH260085",
+        "mobility": "Unknown",
+        "case_type": "NON CA",
+        "diagnosis": "E4 V5 M6 Right Hemiperesis",
+        "address": "BahaNIlaya 2nd main ,Sriramnagar new extension Tumkur.",
+        "phone": "9049877569",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Needs Review",
+        "assigned_day": "UNASSIGNED \u2014 review mobility status"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.102738,
+          13.325966
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Sarojamma",
+        "registration_number": "RIMH260086",
+        "mobility": "Bedbound",
+        "case_type": "NON CA",
+        "diagnosis": "CVA LEFT SIDED HEMIPARESIS K/C/O DM TYPE 2 HTN",
+        "address": "sri revanna siddeshwara nilaya banashankari 2 nd stage 1 st main 2 nd cross netaji subhas chandra bose road tumukur",
+        "phone": "9.17619E+11",
+        "status": "Deceased",
+        "date_of_death": "11.06.2026",
+        "frequency_tier": "Weekly",
+        "assigned_day": ""
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.106613,
+          13.34576
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Puttalakshmi",
+        "registration_number": "RIMH260087",
+        "mobility": "Chairbound",
+        "case_type": "NON CA",
+        "diagnosis": "CCF,HTN,DM ,OSA and Hypothyrodism",
+        "address": "House No 125, Anjeneyaswamy Temple Road, Tumkur.",
+        "phone": "9.1988E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Fortnightly",
+        "assigned_day": "Tuesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.106376,
+          13.347491
+        ]
+      },
+      "properties": {
+        "name": "Mrs. T V INDIRA",
+        "registration_number": "RIMH260088",
+        "mobility": "Chairbound",
+        "case_type": "NON CA",
+        "diagnosis": "Frailty",
+        "address": "1st main 1st cross sriram Nagar Tumkur",
+        "phone": "9.19353E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Fortnightly",
+        "assigned_day": "Tuesday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.116765,
+          13.334382
+        ]
+      },
+      "properties": {
+        "name": "Mr. Muneer Ahamed",
+        "registration_number": "RIMH260090",
+        "mobility": "Unknown",
+        "case_type": "NON CA",
+        "diagnosis": "Hypertension\r\nCVA with left hemiplagia\r\nAstrocycloma (GF4)\r\nFracture Left LL",
+        "address": "1st cross,Pakir Palya, Ashoka Nagara, Tumkur",
+        "phone": "9.19964E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Needs Review",
+        "assigned_day": "UNASSIGNED \u2014 review mobility status"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mrs. Ratnamma",
+        "registration_number": "RIMH260109",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "Frozen Shoulder",
+        "address": "Sri Sharadamba Trust samaja seva bhavana building prashanth nagara",
+        "phone": "9.19946E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Thursday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.28015,
+          13.19261
+        ]
+      },
+      "properties": {
+        "name": "Mrs. GALAHANUMAKKA",
+        "registration_number": "RIMH260113",
+        "mobility": "Bedbound",
+        "case_type": "CA",
+        "diagnosis": "CA Ovary with CVA",
+        "address": "Gundenahalli, Nelamangala (T), Benglore rural",
+        "phone": "9.16361E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Weekly",
+        "assigned_day": "Friday"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.13280580120131,
+          13.33642078947315
+        ]
+      },
+      "properties": {
+        "name": "Mr. Jayanna",
+        "registration_number": "RIMH260114",
+        "mobility": "Mobile",
+        "case_type": "NON CA",
+        "diagnosis": "Scabies",
+        "address": "Sharadamba trust, Tumkur",
+        "phone": "9.19946E+11",
+        "status": "Active",
+        "date_of_death": "",
+        "frequency_tier": "Monthly",
+        "assigned_day": "Monday"
+      }
+    }
+  ]
+}
