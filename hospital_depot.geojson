@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.09982271414759,
+          13.374905768194475
+        ]
+      },
+      "properties": {
+        "name": "Niram Palliative Care Center",
+        "facility": "Depot"
+      }
+    }
+  ]
+}
