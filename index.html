@@ -76,6 +76,7 @@
       <div class="tab-row">
         <button class="tab-btn active" id="mode-day-btn" onclick="setMode('day')">By day</button>
         <button class="tab-btn" id="mode-custom-btn" onclick="setMode('custom')">Custom selection</button>
+        <button class="tab-btn" id="mode-location-btn" onclick="setMode('location')">Add location</button>
       </div>
     </div>
 
@@ -94,25 +95,7 @@
       <div id="patient-checklist"></div>
     </div>
 
-    <div class="section">
-      <div class="section-label">Map options</div>
-      <label class="toggle-row"><input type="checkbox" id="cb-deceased"> Show deceased patients</label>
-      <button class="secondary-btn" onclick="fetchPatientsFromSheet()">Refresh from Sheet</button>
-      <div id="sheet-status" class="subtitle" style="margin-top:4px;"></div>
-    </div>
-
-    <div class="section">
-      <button id="optimize-btn" disabled>Optimize route</button>
-      <div id="summary"></div>
-      <div id="status-msg">Select a day, then optimize.</div>
-    </div>
-
-    <div class="section">
-      <div class="section-label">Stop order</div>
-      <ul id="stop-list"></ul>
-    </div>
-
-    <div class="section">
+    <div class="section" id="location-section" style="display:none;">
       <div class="section-label">Add a new location</div>
       <p class="subtitle" style="margin-top:0;">Click the map, or enter coordinates below. It routes directly to Niram Palliative Care Center.</p>
       <div id="coord-panel">
@@ -140,6 +123,26 @@
         <input type="text" id="save-phone" placeholder="Phone number">
         <button class="primary-btn" onclick="submitNewPatient()">Submit to Google Sheet</button>
         <div id="save-status"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Map options</div>
+      <label class="toggle-row"><input type="checkbox" id="cb-deceased"> Show deceased patients</label>
+      <button class="secondary-btn" onclick="fetchPatientsFromSheet()">Refresh from Sheet</button>
+      <div id="sheet-status" class="subtitle" style="margin-top:4px;"></div>
+    </div>
+
+    <div id="route-results-section">
+      <div class="section">
+        <button id="optimize-btn" disabled>Optimize route</button>
+        <div id="summary"></div>
+        <div id="status-msg">Select a day, then optimize.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">Stop order</div>
+        <ul id="stop-list"></ul>
       </div>
     </div>
   </div>
@@ -224,8 +227,11 @@ function setMode(newMode) {
   mode = newMode;
   document.getElementById('mode-day-btn').classList.toggle('active', mode === 'day');
   document.getElementById('mode-custom-btn').classList.toggle('active', mode === 'custom');
+  document.getElementById('mode-location-btn').classList.toggle('active', mode === 'location');
   document.getElementById('day-section').style.display = mode === 'day' ? 'block' : 'none';
   document.getElementById('custom-section').style.display = mode === 'custom' ? 'block' : 'none';
+  document.getElementById('location-section').style.display = mode === 'location' ? 'block' : 'none';
+  document.getElementById('route-results-section').style.display = mode === 'location' ? 'none' : 'block';
   clearRoute();
   refreshPatientMarkers();
 
@@ -234,7 +240,7 @@ function setMode(newMode) {
     document.getElementById('status-msg').textContent = selectedDay
       ? 'Ready to optimize ' + selectedDay + '.'
       : 'Select a day, then optimize.';
-  } else {
+  } else if (mode === 'custom') {
     document.getElementById('optimize-btn').disabled = selectedPatientIds.size === 0;
     document.getElementById('status-msg').textContent = selectedPatientIds.size
       ? selectedPatientIds.size + ' patient(s) selected.'
@@ -437,9 +443,13 @@ function refreshPatientMarkers() {
     if (mode === 'day') {
       highlighted = selectedDay && p.assigned_day === selectedDay;
       dimmed = selectedDay && !highlighted && !isDeceased;
-    } else {
+    } else if (mode === 'custom') {
       highlighted = selectedPatientIds.has(p.registration_number);
       dimmed = selectedPatientIds.size > 0 && !highlighted && !isDeceased;
+    } else {
+      // location mode: show every patient at normal opacity, no highlighting
+      highlighted = false;
+      dimmed = false;
     }
 
     const marker = L.circleMarker(latlng, {
