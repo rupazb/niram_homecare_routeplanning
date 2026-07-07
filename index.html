@@ -132,6 +132,8 @@
       <label class="toggle-row"><input type="checkbox" id="cb-deceased"> Show deceased patients</label>
       <button class="secondary-btn" onclick="fetchPatientsFromSheet()">Refresh from Sheet</button>
       <div id="sheet-status" class="subtitle" style="margin-top:4px;"></div>
+      <button class="secondary-btn" id="my-location-btn" onclick="toggleMyLocation()">Show my location</button>
+      <div id="location-status" class="subtitle" style="margin-top:4px;"></div>
     </div>
 
     <div id="route-results-section">
@@ -197,6 +199,10 @@ let newLocationMarker = null;
 let newLocationRouteLayer = null;
 let pendingNewLocation = null; // {lat, lng}
 
+let isWatchingMyLocation = false;
+let myLocationMarker = null;
+let myLocationAccuracyCircle = null;
+
 // ---------------------------------------------------------------------
 // MAP SETUP
 // ---------------------------------------------------------------------
@@ -216,6 +222,7 @@ legend.onAdd = function () {
     <div class="legend-row"><span class="legend-dot" style="background:${MOBILITY_COLOR.Mobile}"></span>Mobile</div>
     <div class="legend-row"><span class="legend-dot" style="background:#7f8c8d"></span>Deceased</div>
     <div class="legend-row"><span class="legend-dot" style="background:#2c3e93"></span>New location</div>
+    <div class="legend-row"><span class="legend-dot" style="background:#4285F4"></span>Your location</div>
   `;
   return div;
 };
@@ -710,6 +717,65 @@ function submitNewPatient() {
   });
 }
 window.submitNewPatient = submitNewPatient;
+
+// ---------------------------------------------------------------------
+// LIVE GPS LOCATION — like Google Maps' blue dot. Uses the browser's
+// Geolocation API via Leaflet's built-in map.locate(), in continuous
+// "watch" mode so the marker follows the ambulance as it drives. Requires
+// HTTPS (GitHub Pages serves over HTTPS, so this works once deployed) and
+// the user granting location permission when the browser prompts.
+// ---------------------------------------------------------------------
+function toggleMyLocation() {
+  const btn = document.getElementById('my-location-btn');
+  const statusEl = document.getElementById('location-status');
+
+  if (isWatchingMyLocation) {
+    map.stopLocate();
+    if (myLocationMarker) { map.removeLayer(myLocationMarker); myLocationMarker = null; }
+    if (myLocationAccuracyCircle) { map.removeLayer(myLocationAccuracyCircle); myLocationAccuracyCircle = null; }
+    isWatchingMyLocation = false;
+    btn.textContent = 'Show my location';
+    statusEl.textContent = '';
+    return;
+  }
+
+  if (!navigator.geolocation) {
+    statusEl.textContent = 'Geolocation is not supported in this browser.';
+    return;
+  }
+
+  statusEl.textContent = 'Requesting location permission…';
+  map.locate({ watch: true, enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 });
+  isWatchingMyLocation = true;
+  btn.textContent = 'Stop showing my location';
+}
+window.toggleMyLocation = toggleMyLocation;
+
+map.on('locationfound', e => {
+  const statusEl = document.getElementById('location-status');
+  const radius = e.accuracy / 2;
+
+  if (!myLocationMarker) {
+    myLocationMarker = L.circleMarker(e.latlng, {
+      radius: 8, fillColor: '#4285F4', color: '#fff', weight: 2, fillOpacity: 1
+    }).addTo(map).bindPopup('You are here');
+    myLocationAccuracyCircle = L.circle(e.latlng, {
+      radius: radius, color: '#4285F4', weight: 1, fillColor: '#4285F4', fillOpacity: 0.12
+    }).addTo(map);
+    map.setView(e.latlng, 15); // only recenter on the first fix, not every update
+  } else {
+    myLocationMarker.setLatLng(e.latlng);
+    myLocationAccuracyCircle.setLatLng(e.latlng).setRadius(radius);
+  }
+
+  statusEl.textContent = 'Location accuracy: ±' + Math.round(e.accuracy) + ' m';
+});
+
+map.on('locationerror', e => {
+  const statusEl = document.getElementById('location-status');
+  statusEl.textContent = 'Could not get your location (' + e.message + ').';
+  toggleMyLocation(); // reset button/state back to "off"
+});
 </script>
 </body>
 </html>
