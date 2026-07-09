@@ -11,7 +11,15 @@
     html, body { height: 100%; margin: 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; color: #1c2a2f; }
     #app { display: flex; height: 100%; width: 100%; }
     #map { flex: 1; height: 100%; }
-    #sidebar { width: 360px; height: 100%; overflow-y: auto; background: #f7f8f6; border-left: 1px solid #d8ddd9; box-sizing: border-box; padding: 18px 16px 40px; }
+    #sidebar { width: 360px; height: 100%; overflow-y: auto; overflow-x: hidden; background: #f7f8f6; border-left: 1px solid #d8ddd9; box-sizing: border-box; padding: 18px 16px 40px; transition: width 0.28s ease, padding 0.28s ease; }
+    #sidebar.collapsed { width: 0; padding-left: 0; padding-right: 0; border-left: none; }
+    #sidebar-toggle {
+      position: fixed; top: 50%; right: 360px; transform: translateY(-50%);
+      width: 26px; height: 52px; background: white; border: 1px solid #c7d0cc; border-right: none;
+      border-radius: 6px 0 0 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      z-index: 1001; transition: right 0.28s ease; box-shadow: -2px 0 6px rgba(0,0,0,0.12); font-size: 14px; color: #0f6e56;
+    }
+    #sidebar-toggle.collapsed { right: 0; }
     #sidebar h1 { font-size: 17px; margin: 0 0 2px; color: #0f3d3e; }
     #sidebar .subtitle { font-size: 12px; color: #6b7772; margin: 0 0 18px; }
     .section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e6e3; }
@@ -67,6 +75,7 @@
 <body>
 <div id="app">
   <div id="map"></div>
+  <button id="sidebar-toggle" onclick="toggleSidebar()">&#8250;</button>
 
   <div id="sidebar">
     <h1>Niram Ambulance Route Planner</h1>
@@ -158,6 +167,9 @@
 // CONFIG
 // ---------------------------------------------------------------------
 const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjNkNmM5Mzg3NWI2YzQ0MTZiNTMyOTYyOWU3OGFlYzdkIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
+// Note: a GraphHopper implementation was tried as a fallback provider and
+// removed for now to keep the code simple — revisit if ORS reliability
+// becomes a recurring problem again (see chat history / README for context).
 
 // Google Apps Script Web App URL (see google_apps_script.gs + README for setup).
 // A plain Sheets API key can only READ public sheets — appending rows needs
@@ -210,6 +222,21 @@ map = L.map('map', { zoomControl: false }).setView([13.35, 77.1], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 L.control.zoom({ position: 'bottomleft' }).addTo(map);
 stopMarkersLayer.addTo(map);
+
+// ---------------------------------------------------------------------
+// COLLAPSIBLE / SLIDING SIDEBAR
+// ---------------------------------------------------------------------
+let sidebarCollapsed = false;
+function toggleSidebar() {
+  sidebarCollapsed = !sidebarCollapsed;
+  document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+  document.getElementById('sidebar-toggle').classList.toggle('collapsed', sidebarCollapsed);
+  document.getElementById('sidebar-toggle').innerHTML = sidebarCollapsed ? '&#8249;' : '&#8250;';
+  // Leaflet needs to recalculate its container size once the CSS slide
+  // finishes, or tiles render incorrectly until the map is interacted with.
+  setTimeout(() => map.invalidateSize(), 300);
+}
+window.toggleSidebar = toggleSidebar;
 
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function () {
@@ -540,7 +567,7 @@ function drawOptimizedRoute(orderedPatients) {
     .then(res => res.json())
     .then(data => {
       if (!data.features || data.features.length === 0) throw new Error('No route geometry returned');
-      clearRoute(true);
+      clearRoute();
       routeLayer = L.geoJSON(data, { style: { color: '#0f6e56', weight: 5 } }).addTo(map);
 
       const summary = data.features[0].properties.summary;
