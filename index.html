@@ -1,3 +1,4 @@
+<!-- deployment retrigger: 2026-07-07 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,7 +107,8 @@
 
     <div class="section" id="location-section" style="display:none;">
       <div class="section-label">Add a new location</div>
-      <p class="subtitle" style="margin-top:0;">Click the map, or enter coordinates below. It routes directly to Niram Palliative Care Center.</p>
+      <p class="subtitle" style="margin-top:0;">Click the map, enter coordinates, or use your live GPS position below. It routes directly to Niram Palliative Care Center.</p>
+      <button class="secondary-btn" onclick="useMyLocationForNewLocation()">Use my current location</button>
       <div id="coord-panel">
         <input type="text" id="lat-input" placeholder="Latitude">
         <input type="text" id="lng-input" placeholder="Longitude">
@@ -802,6 +804,23 @@ map.on('locationerror', e => {
   statusEl.textContent = 'Could not get your location (' + e.message + ').';
   toggleMyLocation(); // reset button/state back to "off"
 });
+
+// ---------------------------------------------------------------------
+// "Use my current location" — feeds the live GPS position (from "Show my
+// location") straight into the existing Add Location flow, so there's no
+// need to manually click the map or type coordinates. Reuses
+// handleNewLocation() exactly as if that point had been clicked directly.
+// ---------------------------------------------------------------------
+function useMyLocationForNewLocation() {
+  if (!isWatchingMyLocation || !myLocationMarker) {
+    alert('Turn on "Show my location" first (under Map options), then try this again once your position appears on the map.');
+    return;
+  }
+  const latlng = myLocationMarker.getLatLng();
+  map.setView(latlng, 15);
+  handleNewLocation(latlng);
+}
+window.useMyLocationForNewLocation = useMyLocationForNewLocation;
 </script>
 </body>
 </html>
