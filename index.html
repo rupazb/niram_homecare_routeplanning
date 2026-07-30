@@ -150,6 +150,7 @@
       <div class="section">
         <button id="optimize-btn" disabled>Optimize route</button>
         <div id="summary"></div>
+        <button class="secondary-btn" id="navigate-btn" style="display:none;" onclick="navigateInGoogleMaps()">Navigate this route in Google Maps</button>
         <div id="status-msg">Select a day, then optimize.</div>
       </div>
 
@@ -167,7 +168,7 @@
 // ---------------------------------------------------------------------
 // CONFIG
 // ---------------------------------------------------------------------
-const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjNkNmM5Mzg3NWI2YzQ0MTZiNTMyOTYyOWU3OGFlYzdkIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
+const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
 // Note: a GraphHopper implementation was tried as a fallback provider and
 // removed for now to keep the code simple — revisit if ORS reliability
 // becomes a recurring problem again (see chat history / README for context).
@@ -205,6 +206,7 @@ let selectedDay = null;
 let selectedPatientIds = new Set(); // registration_number set, custom mode
 let showDeceased = false;
 let routeLayer = null;
+let currentRouteOrder = []; // patient features in the order of the last computed route
 let stopMarkersLayer = L.layerGroup();
 let customDebounceTimer = null;
 
@@ -575,6 +577,9 @@ function drawOptimizedRoute(orderedPatients) {
       const segments = data.features[0].properties.segments;
       renderStopList(orderedPatients, segments, summary);
 
+      currentRouteOrder = orderedPatients;
+      document.getElementById('navigate-btn').style.display = 'block';
+
       const group = L.featureGroup([routeLayer, hospitalMarker]);
       map.fitBounds(group.getBounds(), { padding: [30, 30] });
 
@@ -585,6 +590,8 @@ function drawOptimizedRoute(orderedPatients) {
       console.error('Directions error:', err);
       document.getElementById('status-msg').textContent = 'Could not draw route geometry. Stop order below is still valid.';
       renderStopList(orderedPatients, null, null);
+      currentRouteOrder = orderedPatients; // stop order is still valid even if geometry failed
+      document.getElementById('navigate-btn').style.display = 'block';
       document.getElementById('optimize-btn').disabled = false;
     });
 }
@@ -594,6 +601,8 @@ function clearRoute(keepStatusMsg) {
   stopMarkersLayer.clearLayers();
   document.getElementById('stop-list').innerHTML = '';
   document.getElementById('summary').style.display = 'none';
+  document.getElementById('navigate-btn').style.display = 'none';
+  currentRouteOrder = [];
 }
 
 function badgeFor(mobility) {
@@ -646,6 +655,40 @@ function renderStopList(orderedPatients, segments, summary) {
       '<div><b>Stops:</b> ' + orderedPatients.length + '</div>';
   }
 }
+
+// ---------------------------------------------------------------------
+// NAVIGATE IN GOOGLE MAPS — hands off actual turn-by-turn driving to the
+// phone's own Maps app (voice guidance, live traffic, rerouting — all
+// things this dashboard isn't trying to rebuild). Uses Google's free
+// public "Maps URLs" deep-link scheme: no API key, no billing, no card.
+// Docs: https://developers.google.com/maps/documentation/urls
+// ---------------------------------------------------------------------
+function navigateInGoogleMaps() {
+  if (!hospitalLatLng || currentRouteOrder.length === 0) {
+    alert('Optimize a route first.');
+    return;
+  }
+
+  const origin = hospitalLatLng.lat + ',' + hospitalLatLng.lng;
+  const destination = origin; // round trip: ambulance returns to the hospital
+
+  // Google's free Maps URL scheme supports a limited number of waypoints
+  // (roughly 9-10) before it silently drops extras or refuses the link —
+  // fine at this project's daily stop counts (5-10), but worth knowing if
+  // a custom-selection day ever grows much larger than that.
+  const waypoints = currentRouteOrder
+    .map(f => f.geometry.coordinates[1] + ',' + f.geometry.coordinates[0])
+    .join('|');
+
+  const url = 'https://www.google.com/maps/dir/?api=1' +
+    '&origin=' + encodeURIComponent(origin) +
+    '&destination=' + encodeURIComponent(destination) +
+    '&waypoints=' + encodeURIComponent(waypoints) +
+    '&travelmode=driving';
+
+  window.open(url, '_blank');
+}
+window.navigateInGoogleMaps = navigateInGoogleMaps;
 
 // ---------------------------------------------------------------------
 // NEW LOCATION: click map or enter coordinates, route straight to hospital
