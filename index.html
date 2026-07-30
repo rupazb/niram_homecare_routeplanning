@@ -651,7 +651,7 @@ function renderStopList(orderedPatients, segments, summary) {
     summaryEl.style.display = 'block';
     summaryEl.innerHTML =
       '<div><b>Total distance:</b> ' + (summary.distance / 1000).toFixed(1) + ' km</div>' +
-      '<div><b>Total drive time:</b> ' + Math.round(summary.duration / 60) + ' min</div>' +
+      '<div><b>Estimated drive time (no live traffic):</b> ' + Math.round(summary.duration / 60) + ' min</div>' +
       '<div><b>Stops:</b> ' + orderedPatients.length + '</div>';
   }
 }
