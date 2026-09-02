@@ -56,13 +56,74 @@
     .legend-row { display: flex; align-items: center; margin-top: 4px; }
     .legend-dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid #333; display: inline-block; margin-right: 7px; }
 
-    #patient-search { width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 5px; margin-bottom: 8px; }
-    #patient-checklist { max-height: 240px; overflow-y: auto; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 6px 8px; }
-    .patient-row { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #f0f2f0; }
+    #patient-search { width: 100%; box-sizing: border-box; padding: 8px 8px; font-size: 13px; border: 1px solid #c7d0cc; border-radius: 5px; margin-bottom: 8px; }
+    #patient-search-results { max-height: 240px; overflow-y: auto; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 6px 8px; }
+    .patient-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; padding: 6px 2px; border-bottom: 1px solid #f0f2f0; cursor: pointer; }
     .patient-row:last-child { border-bottom: none; }
-    .patient-row label { flex: 1; cursor: pointer; }
+    .patient-row:hover { background: #f7f8f6; }
+    .patient-row input[type=checkbox] { margin-top: 2px; flex-shrink: 0; }
+    .patient-row .row-main { flex: 1; min-width: 0; }
+    .patient-row .row-reg { font-weight: 700; color: #0f3d3e; font-size: 11px; }
+    .patient-row .row-name { font-weight: 600; }
+    .patient-row .row-diag { color: #6b7772; font-size: 11px; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #search-empty-msg { font-size: 12px; color: #6b7772; text-align: center; padding: 10px 0; }
     .select-actions { display: flex; gap: 6px; margin-bottom: 6px; }
     .select-actions button { flex: 1; font-size: 11px; padding: 5px; border: 1px solid #c7d0cc; background: white; border-radius: 4px; cursor: pointer; }
+
+    #selected-chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 12px; }
+    .selected-chip { display: flex; align-items: center; gap: 5px; background: #eaf5f0; border: 1px solid #bfe3d6; border-radius: 14px; padding: 4px 6px 4px 10px; font-size: 11px; color: #0f3d3e; }
+    .selected-chip button { background: none; border: none; cursor: pointer; font-size: 13px; color: #0f6e56; line-height: 1; padding: 2px; }
+    #selected-empty-msg { font-size: 11px; color: #6b7772; }
+
+    .latest-update-card { background: #eaf5f0; border: 1px solid #bfe3d6; border-radius: 6px; padding: 9px 10px; margin-bottom: 12px; font-size: 12px; }
+    .latest-update-card .lu-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #0f6e56; font-weight: 700; margin-bottom: 3px; }
+    .latest-update-card .lu-date { font-weight: 700; color: #0f3d3e; }
+    .latest-update-card .lu-status-badge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; background: white; border: 1px solid #bfe3d6; color: #0f5a44; }
+    .latest-update-card .lu-line { margin-top: 3px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .stat-card { background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 8px 6px; text-align: center; }
+    .stat-num { font-size: 19px; font-weight: 700; color: #0f3d3e; line-height: 1.1; }
+    .stat-label { font-size: 10px; color: #6b7772; margin-top: 3px; line-height: 1.25; }
+
+    .filter-hint { font-size: 11px; color: #6b7772; margin: 10px 0 6px; }
+    .mobility-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .mobility-chip { font-size: 11px; padding: 6px 10px; border-radius: 14px; border: 1px solid #c7d0cc; background: white; cursor: pointer; color: #1c2a2f; display: flex; align-items: center; gap: 5px; }
+    .mobility-chip .chip-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .mobility-chip.active { background: #0f6e56; border-color: #0f6e56; color: white; }
+    .mobility-chip.active .chip-dot { border: 1px solid white; }
+
+    .patient-name-link { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; }
+    .patient-name-link:hover { color: #0f6e56; }
+
+    #profile-overlay { display: none; position: fixed; inset: 0; background: rgba(15,61,62,0.45); z-index: 2000; align-items: center; justify-content: center; }
+    #profile-overlay.open { display: flex; }
+    #profile-panel { background: white; width: 420px; max-width: 92vw; max-height: 88vh; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    #profile-header { padding: 14px 16px 10px; border-bottom: 1px solid #e2e6e3; display: flex; justify-content: space-between; align-items: flex-start; }
+    #profile-header h2 { margin: 0 0 3px; font-size: 16px; color: #0f3d3e; }
+    #profile-header .subtitle { margin: 0; }
+    #profile-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #6b7772; line-height: 1; padding: 2px 4px; }
+    #profile-tabs { display: flex; border-bottom: 1px solid #e2e6e3; }
+    .profile-tab-btn { flex: 1; padding: 10px; font-size: 12px; font-weight: 600; background: none; border: none; cursor: pointer; color: #6b7772; border-bottom: 2px solid transparent; }
+    .profile-tab-btn.active { color: #0f6e56; border-bottom-color: #0f6e56; }
+    #profile-body { padding: 14px 16px; overflow-y: auto; flex: 1; }
+    #profile-details-tab .detail-row { font-size: 12px; margin-bottom: 7px; }
+    #profile-details-tab .detail-row b { color: #0f3d3e; display: inline-block; min-width: 90px; }
+    #visit-timeline { list-style: none; margin: 0 0 12px; padding: 0; }
+    .visit-entry { background: #f7f8f6; border: 1px solid #e2e6e3; border-radius: 6px; padding: 8px 10px; margin-bottom: 7px; font-size: 12px; }
+    .visit-entry .visit-date { font-weight: 700; color: #0f3d3e; margin-bottom: 3px; }
+    .visit-entry .visit-field { margin-top: 2px; }
+    .visit-entry .visit-field b { color: #444; }
+    #visit-log-empty { font-size: 12px; color: #6b7772; text-align: center; padding: 12px 0; }
+    #log-visit-form { border-top: 1px dashed #d8ddd9; padding-top: 10px; margin-top: 4px; }
+    #log-visit-form textarea, #log-visit-form input, #log-visit-form select { width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 4px; margin-bottom: 6px; }
+    #visit-save-status { font-size: 11px; color: #6b7772; margin-top: 4px; }
+    .visit-status-badge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 10px; margin-left: 6px; font-weight: 600; }
+    .visit-status-Stable { background: #d7ece4; color: #0f5a44; }
+    .visit-status-Improving { background: #d7ece4; color: #0f5a44; }
+    .visit-status-Deteriorating { background: #f9ecd0; color: #7a5a0c; }
+    .visit-status-Critical { background: #f9d8d8; color: #7a1f1f; }
+    .visit-status-Needs-attention { background: #f9ecd0; color: #7a5a0c; }
 
     #coord-panel input { width: 46%; padding: 5px 6px; font-size: 12px; border: 1px solid #c7d0cc; border-radius: 4px; margin-bottom: 6px; }
     #new-location-result { font-size: 12px; background: white; border: 1px solid #d8ddd9; border-radius: 6px; padding: 8px 10px; margin-top: 8px; display: none; }
@@ -82,27 +143,36 @@
     <p class="subtitle">Weekly home-visit routing for the palliative care vehicle</p>
 
     <div class="section">
-      <div class="section-label">Route mode</div>
+      <div class="section-label">Dashboard - case overview</div>
+      <div id="stats-grid" class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-overall">–</div><div class="stat-label">Overall cases</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-active">–</div><div class="stat-label">Active cases</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-pending">–</div><div class="stat-label">Pending review</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-deceased">–</div><div class="stat-label">Deceased</div></div>
+      </div>
+      <p class="filter-hint">Filter by patient type - tap to show only those patients on the map and in route search below.</p>
+      <div id="mobility-chips" class="mobility-chips"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">What do you want to do?</div>
       <div class="tab-row">
-        <button class="tab-btn active" id="mode-day-btn" onclick="setMode('day')">By day</button>
-        <button class="tab-btn" id="mode-custom-btn" onclick="setMode('custom')">Custom selection</button>
-        <button class="tab-btn" id="mode-location-btn" onclick="setMode('location')">Add location</button>
+        <button class="tab-btn active" id="mode-custom-btn" onclick="setMode('custom')">Plan a route</button>
+        <button class="tab-btn" id="mode-location-btn" onclick="setMode('location')">Add new patient</button>
       </div>
     </div>
 
-    <div class="section" id="day-section">
-      <div class="section-label">Visit day</div>
-      <div id="day-tabs" class="tab-row"></div>
-    </div>
-
-    <div class="section" id="custom-section" style="display:none;">
-      <div class="section-label">Select patients</div>
-      <input type="text" id="patient-search" placeholder="Search by name...">
+    <div class="section" id="custom-section">
+      <div class="section-label">Find patients (by registration no. or name)</div>
+      <input type="text" id="patient-search" placeholder="e.g. RIMH260090 or patient name...">
       <div class="select-actions">
-        <button onclick="selectAllVisible(true)">Select all</button>
-        <button onclick="selectAllVisible(false)">Clear</button>
+        <button onclick="selectAllVisible(true)">Select all shown</button>
+        <button onclick="selectAllVisible(false)">Clear shown</button>
       </div>
-      <div id="patient-checklist"></div>
+      <div id="patient-search-results"></div>
+
+      <div class="section-label" style="margin-top:14px;">Selected for this route (<span id="selected-count">0</span>)</div>
+      <div id="selected-chips"><span id="selected-empty-msg">No patients selected yet - search above and tap a patient to add them.</span></div>
     </div>
 
     <div class="section" id="location-section" style="display:none;">
@@ -151,12 +221,66 @@
         <button id="optimize-btn" disabled>Optimize route</button>
         <div id="summary"></div>
         <button class="secondary-btn" id="navigate-btn" style="display:none;" onclick="navigateInGoogleMaps()">Navigate this route in Google Maps</button>
-        <div id="status-msg">Select a day, then optimize.</div>
+        <div id="status-msg">Search and select patients above, then optimize.</div>
       </div>
 
       <div class="section">
         <div class="section-label">Stop order</div>
         <ul id="stop-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="profile-overlay" onclick="if(event.target===this) closeProfile()">
+    <div id="profile-panel">
+      <div id="profile-header">
+        <div>
+          <h2 id="profile-name">Patient name</h2>
+          <p class="subtitle" id="profile-subline">N/A</p>
+        </div>
+        <button id="profile-close" onclick="closeProfile()">&times;</button>
+      </div>
+      <div id="profile-tabs">
+        <button class="profile-tab-btn active" id="profile-tab-details-btn" onclick="setProfileTab('details')">Details</button>
+        <button class="profile-tab-btn" id="profile-tab-visits-btn" onclick="setProfileTab('visits')">Visit history</button>
+      </div>
+      <div id="profile-body">
+        <div id="profile-details-tab">
+          <div id="latest-update-card" class="latest-update-card" style="display:none;">
+            <div class="lu-label">Latest update</div>
+            <div><span class="lu-date" id="lu-date"></span><span id="lu-status-badge"></span></div>
+            <div class="lu-line" id="lu-notes"></div>
+            <div class="lu-line" id="lu-treatment"></div>
+            <div class="lu-line" id="lu-next-plan"></div>
+          </div>
+          <div class="detail-row"><b>Mobility</b><span id="pd-mobility">N/A</span></div>
+          <div class="detail-row"><b>Case type</b><span id="pd-case">N/A</span></div>
+          <div class="detail-row"><b>Status</b><span id="pd-status">N/A</span></div>
+          <div class="detail-row"><b>Diagnosis</b><span id="pd-diagnosis">N/A</span></div>
+          <div class="detail-row"><b>Address</b><span id="pd-address">N/A</span></div>
+          <div class="detail-row"><b>Phone</b><span id="pd-phone">N/A</span></div>
+          <div class="detail-row"><b>Visit tier</b><span id="pd-tier">N/A</span></div>
+        </div>
+        <div id="profile-visits-tab" style="display:none;">
+          <div id="visit-log-status" class="subtitle">Loading visit history…</div>
+          <ul id="visit-timeline"></ul>
+          <div id="log-visit-form">
+            <div class="section-label" style="margin-bottom:6px;">Log this visit</div>
+            <select id="visit-status">
+              <option value="">Patient status (optional)...</option>
+              <option value="Stable">Stable</option>
+              <option value="Improving">Improving</option>
+              <option value="Deteriorating">Deteriorating</option>
+              <option value="Critical">Critical</option>
+              <option value="Needs attention">Needs attention</option>
+            </select>
+            <textarea id="visit-notes" placeholder="Visit notes - what was observed/done" rows="2"></textarea>
+            <textarea id="visit-treatment" placeholder="Current treatment given" rows="2"></textarea>
+            <input type="text" id="visit-next-plan" placeholder="Next visit plan">
+            <button class="primary-btn" onclick="submitVisitLog()">Save visit entry</button>
+            <div id="visit-save-status"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -170,27 +294,32 @@
 // ---------------------------------------------------------------------
 const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
 // Note: a GraphHopper implementation was tried as a fallback provider and
-// removed for now to keep the code simple — revisit if ORS reliability
+// removed for now to keep the code simple - revisit if ORS reliability
 // becomes a recurring problem again (see chat history / README for context).
 
 // Google Apps Script Web App URL (see google_apps_script.gs + README for setup).
-// A plain Sheets API key can only READ public sheets — appending rows needs
+// A plain Sheets API key can only READ public sheets - appending rows needs
 // either OAuth or this Apps Script proxy, which is why we use the latter.
 const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxdycTVX-sX7ICEhVLX4OZDUPUiMz83WMFuo-LF6u5f6vOnbzNLJM6IkdtOuz_Jb2-04g/exec";
 
-// Live read of the master roster straight from Google Sheets — this makes
+// Live read of the master roster straight from Google Sheets - this makes
 // the Sheet the single source of truth: editing it, or adding a row through
 // the "save this location" form below, shows up here on next refresh with
 // no separate CSV/GeoJSON export step. Requires:
 //   - Google Sheets API enabled on a Google Cloud project
 //   - An API key restricted to the Sheets API
-//   - The sheet shared as "Anyone with the link — Viewer"
+//   - The sheet shared as "Anyone with the link - Viewer"
 const GOOGLE_SHEETS_API_KEY = "AIzaSyCrYFrV-2XL035OiVAPsrfTCdwAB1KRgR4";
 const SPREADSHEET_ID = "1FJlpzfeQ-nBJJHCQsl90eQZHPMfXrswqpw9jeAgNiww";       // from the sheet's URL
 const SHEET_RANGE = "Patients!A:Z";                  // tab name + full range
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+// Visit history lives in its own tab so a patient can have many rows over
+// time. Read live (like Patients); written via the Apps Script "log_visit"
+// action (see google_apps_script.gs - needs this action added).
+const VISITLOG_RANGE = "VisitLog!A:Z";
+
 const MOBILITY_COLOR = { Bedbound: "#c0392b", Chairbound: "#d68910", Mobile: "#0f6e56", Unknown: "#7f8c8d" };
+const MOBILITY_OPTIONS = ["Bedbound", "Chairbound", "Mobile", "Unknown"]; // drives the dashboard filter chips
 const CUSTOM_DEBOUNCE_MS = 700;
 
 // ---------------------------------------------------------------------
@@ -201,9 +330,9 @@ let hospitalLatLng = null;
 let hospitalMarker = null;
 let patientFeatures = [];
 let patientMarkers = {};
-let mode = 'day';                 // 'day' | 'custom'
-let selectedDay = null;
-let selectedPatientIds = new Set(); // registration_number set, custom mode
+let mode = 'custom';               // 'custom' | 'location'
+let mobilityFilter = null;         // null = all types; else one of MOBILITY_OPTIONS - drives the dashboard filter chips
+let selectedPatientIds = new Set(); // registration_number set, chosen for the route being planned
 let showDeceased = false;
 let routeLayer = null;
 let currentRouteOrder = []; // patient features in the order of the last computed route
@@ -259,100 +388,160 @@ legend.onAdd = function () {
 legend.addTo(map);
 
 // ---------------------------------------------------------------------
-// MODE + DAY TABS
+// MODE - just "plan a route" (search + select patients) vs "add a new
+// patient location". Day-based scheduling has been removed: staff decide
+// each day's actual route from the day's real needs, using the dashboard
+// filters below rather than a fixed pre-assigned weekday.
 // ---------------------------------------------------------------------
 function setMode(newMode) {
   mode = newMode;
-  document.getElementById('mode-day-btn').classList.toggle('active', mode === 'day');
   document.getElementById('mode-custom-btn').classList.toggle('active', mode === 'custom');
   document.getElementById('mode-location-btn').classList.toggle('active', mode === 'location');
-  document.getElementById('day-section').style.display = mode === 'day' ? 'block' : 'none';
   document.getElementById('custom-section').style.display = mode === 'custom' ? 'block' : 'none';
   document.getElementById('location-section').style.display = mode === 'location' ? 'block' : 'none';
   document.getElementById('route-results-section').style.display = mode === 'location' ? 'none' : 'block';
   clearRoute();
   refreshPatientMarkers();
 
-  if (mode === 'day') {
-    document.getElementById('optimize-btn').disabled = !selectedDay;
-    document.getElementById('status-msg').textContent = selectedDay
-      ? 'Ready to optimize ' + selectedDay + '.'
-      : 'Select a day, then optimize.';
-  } else if (mode === 'custom') {
+  if (mode === 'custom') {
     document.getElementById('optimize-btn').disabled = selectedPatientIds.size === 0;
     document.getElementById('status-msg').textContent = selectedPatientIds.size
       ? selectedPatientIds.size + ' patient(s) selected.'
-      : 'Select patients from the list to build a route.';
+      : 'Search and select patients above, then optimize.';
   }
 }
 
-const dayTabsEl = document.getElementById('day-tabs');
-DAYS.forEach(day => {
-  const btn = document.createElement('button');
-  btn.className = 'tab-btn';
-  btn.textContent = day.slice(0, 3);
-  btn.onclick = () => selectDay(day);
-  btn.dataset.day = day;
-  dayTabsEl.appendChild(btn);
-});
-
-function selectDay(day) {
-  selectedDay = day;
-  document.querySelectorAll('#day-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
-  clearRoute();
-  refreshPatientMarkers();
-  document.getElementById('optimize-btn').disabled = false;
-  const count = patientFeatures.filter(f => f.properties.assigned_day === day).length;
-  document.getElementById('status-msg').textContent = count + ' patient(s) scheduled ' + day + '. Click optimize to sequence the route.';
-}
-
 // ---------------------------------------------------------------------
-// CUSTOM SELECTION CHECKLIST
+// DASHBOARD FILTER CHIPS - filter by TYPE_OF_PATIENT (mobility). Selecting
+// a chip hides everything else on the map AND narrows the patient search
+// list below, so the same filter drives both "what am I looking at" and
+// "who can I add to a route" - one control, two places it matters.
 // ---------------------------------------------------------------------
-function renderChecklist(filterText) {
-  const listEl = document.getElementById('patient-checklist');
-  listEl.innerHTML = '';
-  const q = (filterText || '').trim().toLowerCase();
+function renderMobilityChips(counts) {
+  const el = document.getElementById('mobility-chips');
+  el.innerHTML = '';
 
-  patientFeatures
-    .filter(f => f.properties.status === 'Active')
-    .filter(f => !q || f.properties.name.toLowerCase().includes(q))
-    .forEach(f => {
-      const p = f.properties;
-      const row = document.createElement('div');
-      row.className = 'patient-row';
-      const checked = selectedPatientIds.has(p.registration_number) ? 'checked' : '';
-      row.innerHTML =
-        '<input type="checkbox" data-reg="' + p.registration_number + '" ' + checked + '>' +
-        '<label>' + p.name + badgeFor(p.mobility) + '</label>';
-      listEl.appendChild(row);
-    });
+  const allChip = document.createElement('button');
+  allChip.className = 'mobility-chip' + (mobilityFilter === null ? ' active' : '');
+  allChip.textContent = 'All (' + counts.__all + ')';
+  allChip.onclick = () => setMobilityFilter(null);
+  el.appendChild(allChip);
 
-  listEl.querySelectorAll('input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', e => {
-      const reg = e.target.dataset.reg;
-      if (e.target.checked) selectedPatientIds.add(reg); else selectedPatientIds.delete(reg);
-      onCustomSelectionChanged();
-    });
+  MOBILITY_OPTIONS.forEach(opt => {
+    const chip = document.createElement('button');
+    chip.className = 'mobility-chip' + (mobilityFilter === opt ? ' active' : '');
+    chip.innerHTML = '<span class="chip-dot" style="background:' + MOBILITY_COLOR[opt] + '"></span>' + opt + ' (' + (counts[opt] || 0) + ')';
+    chip.onclick = () => setMobilityFilter(opt);
+    el.appendChild(chip);
   });
 }
 
+function setMobilityFilter(value) {
+  mobilityFilter = value;
+  refreshPatientMarkers();
+  renderPatientSearchResults(document.getElementById('patient-search').value);
+  updateStats(); // re-render chips so the active highlight updates
+}
+window.setMobilityFilter = setMobilityFilter;
+
+// ---------------------------------------------------------------------
+// FIND PATIENTS - search by registration number OR name, tap a result to
+// add/remove it from the route being planned. Respects the dashboard's
+// mobility filter chip, so narrowing to "Bedbound" up top also narrows
+// who shows up here.
+// ---------------------------------------------------------------------
+function renderPatientSearchResults(filterText) {
+  const listEl = document.getElementById('patient-search-results');
+  listEl.innerHTML = '';
+  const q = (filterText || '').trim().toLowerCase();
+
+  const matches = patientFeatures
+    .filter(f => f.properties.status === 'Active')
+    .filter(f => !mobilityFilter || f.properties.mobility === mobilityFilter)
+    .filter(f => !q || f.properties.name.toLowerCase().includes(q) || f.properties.registration_number.toLowerCase().includes(q));
+
+  if (matches.length === 0) {
+    const msg = document.createElement('div');
+    msg.id = 'search-empty-msg';
+    msg.textContent = 'No matching patients.';
+    listEl.appendChild(msg);
+    return;
+  }
+
+  matches.forEach(f => {
+    const p = f.properties;
+    const row = document.createElement('div');
+    row.className = 'patient-row';
+    const checked = selectedPatientIds.has(p.registration_number) ? 'checked' : '';
+    row.innerHTML =
+      '<input type="checkbox" data-reg="' + p.registration_number + '" ' + checked + '>' +
+      '<div class="row-main">' +
+        '<div><span class="row-reg">' + p.registration_number + '</span> <span class="row-name">' + p.name + '</span>' + badgeFor(p.mobility) + '</div>' +
+        '<div class="row-diag">' + (p.diagnosis || '') + '</div>' +
+      '</div>';
+
+    // clicking anywhere on the row toggles the checkbox - not just the tiny box itself
+    row.addEventListener('click', e => {
+      if (e.target.tagName === 'INPUT') return; // checkbox already handles its own toggle below
+      const cb = row.querySelector('input[type=checkbox]');
+      cb.checked = !cb.checked;
+      toggleSelection(p.registration_number, cb.checked);
+    });
+    row.querySelector('input[type=checkbox]').addEventListener('change', e => {
+      toggleSelection(p.registration_number, e.target.checked);
+    });
+
+    listEl.appendChild(row);
+  });
+}
+
+function toggleSelection(reg, isSelected) {
+  if (isSelected) selectedPatientIds.add(reg); else selectedPatientIds.delete(reg);
+  onCustomSelectionChanged();
+}
+
 function selectAllVisible(select) {
-  document.querySelectorAll('#patient-checklist input[type=checkbox]').forEach(cb => {
+  document.querySelectorAll('#patient-search-results input[type=checkbox]').forEach(cb => {
     cb.checked = select;
     if (select) selectedPatientIds.add(cb.dataset.reg); else selectedPatientIds.delete(cb.dataset.reg);
   });
   onCustomSelectionChanged();
 }
 
-document.getElementById('patient-search').addEventListener('input', e => renderChecklist(e.target.value));
+document.getElementById('patient-search').addEventListener('input', e => renderPatientSearchResults(e.target.value));
+
+function renderSelectedChips() {
+  const el = document.getElementById('selected-chips');
+  document.getElementById('selected-count').textContent = selectedPatientIds.size;
+
+  if (selectedPatientIds.size === 0) {
+    el.innerHTML = '<span id="selected-empty-msg">No patients selected yet - search above and tap a patient to add them.</span>';
+    return;
+  }
+
+  el.innerHTML = '';
+  selectedPatientIds.forEach(reg => {
+    const f = patientFeatures.find(x => x.properties.registration_number === reg);
+    const label = f ? f.properties.name : reg;
+    const chip = document.createElement('span');
+    chip.className = 'selected-chip';
+    chip.innerHTML = '<span>' + label + '</span>';
+    const removeBtn = document.createElement('button');
+    removeBtn.innerHTML = '&times;';
+    removeBtn.onclick = () => { toggleSelection(reg, false); };
+    chip.appendChild(removeBtn);
+    el.appendChild(chip);
+  });
+}
 
 function onCustomSelectionChanged() {
   refreshPatientMarkers();
+  renderPatientSearchResults(document.getElementById('patient-search').value); // keep checkbox states in sync
+  renderSelectedChips();
   document.getElementById('optimize-btn').disabled = selectedPatientIds.size === 0;
   document.getElementById('status-msg').textContent = selectedPatientIds.size
-    ? selectedPatientIds.size + ' patient(s) selected — recalculating route…'
-    : 'Select patients from the list to build a route.';
+    ? selectedPatientIds.size + ' patient(s) selected - recalculating route…'
+    : 'Search and select patients above, then optimize.';
 
   clearTimeout(customDebounceTimer);
   if (selectedPatientIds.size === 0) { clearRoute(); return; }
@@ -363,8 +552,12 @@ function onCustomSelectionChanged() {
 }
 
 // ---------------------------------------------------------------------
-// NORMALIZATION (mirrors prepare_patient_routes.py, so display is correct
-// even before Python has re-run — only ASSIGNED_DAY needs that offline step)
+// NORMALIZATION (client-side rules the dashboard now owns entirely - there
+// is no offline Python step anymore; mobility, case type, status, and
+// frequency tier are all derived straight from the live Sheet on every load)
+function frequencyTierFor(mobility) {
+  return { Bedbound: 'Weekly', Chairbound: 'Fortnightly', Mobile: 'Monthly' }[mobility] || 'Needs Review';
+}
 // ---------------------------------------------------------------------
 function normalizeMobility(raw) {
   const r = (raw || '').trim().toLowerCase().replace(/\s+/g, '');
@@ -384,7 +577,7 @@ function statusFor(dateOfDeath) {
 }
 
 // ---------------------------------------------------------------------
-// LOAD DATA — hospital is a small static point; patients load live from
+// LOAD DATA - hospital is a small static point; patients load live from
 // the Google Sheet so any edit or new "save to roster" submission shows up
 // on refresh without a separate export/upload step.
 // ---------------------------------------------------------------------
@@ -444,19 +637,16 @@ function fetchPatientsFromSheet(isInitialLoad) {
             phone: get(row, 'PHONE_NUMBER'),
             status: statusFor(get(row, 'DATE_OF_DEATH')),
             date_of_death: get(row, 'DATE_OF_DEATH'),
-            frequency_tier: get(row, 'FREQUENCY_TIER') || (mobility === 'Unknown' ? 'Needs Review' : ''),
-            // ASSIGNED_DAY only exists once prepare_patient_routes.py has
-            // written it back via the Apps Script "sync_schedule" action —
-            // until then, this patient is usable in Custom selection mode
-            // but won't appear under any day tab.
-            assigned_day: get(row, 'ASSIGNED_DAY') || ''
+            frequency_tier: frequencyTierFor(mobility)
           }
         });
       });
 
       patientFeatures = features;
       refreshPatientMarkers();
-      renderChecklist(document.getElementById('patient-search').value);
+      renderPatientSearchResults(document.getElementById('patient-search').value);
+      renderSelectedChips();
+      updateStats();
 
       if (isInitialLoad) {
         const bounds = L.latLngBounds([hospitalLatLng]);
@@ -468,7 +658,7 @@ function fetchPatientsFromSheet(isInitialLoad) {
     })
     .catch(err => {
       console.error('Sheet read error:', err);
-      statusEl.textContent = 'Could not load from the Sheet — check SPREADSHEET_ID / API key / sharing settings.';
+      statusEl.textContent = 'Could not load from the Sheet - check SPREADSHEET_ID / API key / sharing settings.';
     });
 }
 window.fetchPatientsFromSheet = fetchPatientsFromSheet;
@@ -482,15 +672,13 @@ function refreshPatientMarkers() {
   patientFeatures.forEach(f => {
     const p = f.properties;
     if (p.status === 'Deceased' && !showDeceased) return;
+    if (mobilityFilter && p.mobility !== mobilityFilter) return; // dashboard filter chip hides everything else
 
     const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
     const isDeceased = p.status === 'Deceased';
 
     let highlighted, dimmed;
-    if (mode === 'day') {
-      highlighted = selectedDay && p.assigned_day === selectedDay;
-      dimmed = selectedDay && !highlighted && !isDeceased;
-    } else if (mode === 'custom') {
+    if (mode === 'custom') {
       highlighted = selectedPatientIds.has(p.registration_number);
       dimmed = selectedPatientIds.size > 0 && !highlighted && !isDeceased;
     } else {
@@ -505,23 +693,248 @@ function refreshPatientMarkers() {
       color: '#000', weight: 1, fillOpacity: dimmed ? 0.25 : 0.9
     }).addTo(map);
 
-    marker.bindPopup('<b>' + p.name + '</b><br>' + p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' + p.diagnosis + '<br><small>' + p.address + '</small>');
+    marker.bindPopup(
+      '<b class="patient-name-link" onclick="openPatientProfile(' + JSON.stringify(p.registration_number) + ')">' + p.name + '</b><br>' +
+      p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' + p.diagnosis + '<br><small>' + p.address + '</small>'
+    );
     patientMarkers[p.registration_number] = marker;
   });
 }
 
 // ---------------------------------------------------------------------
+// CASE OVERVIEW STATS - Overall / Active / Pending review / Deceased
+// counts, plus per-mobility-type counts feeding the filter chips. All
+// computed straight from patientFeatures (already loaded live from the
+// Sheet), so this needs no extra backend call. "Pending review" = active
+// patients whose TYPE_OF_PATIENT couldn't be classified as Bedbound /
+// Chairbound / Mobile - a data-entry gap someone needs to fix in the Sheet.
+// ---------------------------------------------------------------------
+function updateStats() {
+  const overall = patientFeatures.length;
+  const activeList = patientFeatures.filter(f => f.properties.status === 'Active');
+  const active = activeList.length;
+  const pending = activeList.filter(f => f.properties.mobility === 'Unknown').length;
+  const deceased = overall - active;
+
+  document.getElementById('stat-overall').textContent = overall;
+  document.getElementById('stat-active').textContent = active;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-deceased').textContent = deceased;
+
+  const counts = { __all: active };
+  MOBILITY_OPTIONS.forEach(opt => {
+    counts[opt] = activeList.filter(f => f.properties.mobility === opt).length;
+  });
+  renderMobilityChips(counts);
+}
+
+// ---------------------------------------------------------------------
+// PATIENT PROFILE PANEL - details + visit history, opened by clicking a
+// patient's name anywhere in the app (map popup, checklist, stop list).
+// Visit history is read live from the VisitLog Sheet tab and a new entry
+// is written via the Apps Script "log_visit" action (fire-and-forget,
+// same no-cors pattern as "save this location").
+// ---------------------------------------------------------------------
+let profileRegNumber = null;
+let visitLogCache = null; // all rows, fetched once per session and reused
+
+function openPatientProfile(regNumber) {
+  const f = patientFeatures.find(x => x.properties.registration_number === regNumber);
+  if (!f) return;
+  const p = f.properties;
+  profileRegNumber = regNumber;
+
+  document.getElementById('profile-name').textContent = p.name;
+  document.getElementById('profile-subline').textContent = p.registration_number;
+  document.getElementById('pd-mobility').textContent = p.mobility;
+  document.getElementById('pd-case').textContent = p.case_type;
+  document.getElementById('pd-status').textContent = p.status + (p.status === 'Deceased' && p.date_of_death ? ' (' + p.date_of_death + ')' : '');
+  document.getElementById('pd-diagnosis').textContent = p.diagnosis || 'N/A';
+  document.getElementById('pd-address').textContent = p.address || 'N/A';
+  document.getElementById('pd-phone').textContent = p.phone || 'N/A';
+  document.getElementById('pd-tier').textContent = p.frequency_tier || 'N/A';
+
+  document.getElementById('visit-status').value = '';
+  document.getElementById('visit-notes').value = '';
+  document.getElementById('visit-treatment').value = '';
+  document.getElementById('visit-next-plan').value = '';
+  document.getElementById('visit-save-status').textContent = '';
+
+  setProfileTab('details');
+  document.getElementById('profile-overlay').classList.add('open');
+  loadVisitHistory(); // fetch (or reuse cached) history so "Latest update" shows on Details right away
+}
+window.openPatientProfile = openPatientProfile;
+
+function closeProfile() {
+  document.getElementById('profile-overlay').classList.remove('open');
+  profileRegNumber = null;
+}
+window.closeProfile = closeProfile;
+
+function setProfileTab(tab) {
+  document.getElementById('profile-tab-details-btn').classList.toggle('active', tab === 'details');
+  document.getElementById('profile-tab-visits-btn').classList.toggle('active', tab === 'visits');
+  document.getElementById('profile-details-tab').style.display = tab === 'details' ? 'block' : 'none';
+  document.getElementById('profile-visits-tab').style.display = tab === 'visits' ? 'block' : 'none';
+  if (tab === 'visits') loadVisitHistory();
+}
+window.setProfileTab = setProfileTab;
+
+function loadVisitHistory(forceRefresh) {
+  const statusEl = document.getElementById('visit-log-status');
+  if (visitLogCache && !forceRefresh) {
+    renderVisitTimeline();
+    return;
+  }
+  statusEl.textContent = 'Loading visit history…';
+  statusEl.style.display = 'block';
+
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(VISITLOG_RANGE)}?key=${GOOGLE_SHEETS_API_KEY}`;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.values || data.values.length < 2) { visitLogCache = []; renderVisitTimeline(); return; }
+      const [headerRow, ...dataRows] = data.values;
+      const colIndex = {};
+      headerRow.forEach((h, i) => { colIndex[String(h).trim()] = i; });
+      const get = (row, name) => (colIndex[name] !== undefined ? (row[colIndex[name]] || '') : '');
+
+      visitLogCache = dataRows.map(row => ({
+        registration_number: get(row, 'registration_number'),
+        visit_date: get(row, 'visit_date'),
+        visit_notes: get(row, 'visit_notes'),
+        treatment_given: get(row, 'treatment_given'),
+        next_visit_plan: get(row, 'next_visit_plan'),
+        condition_status: get(row, 'condition_status')
+      }));
+      renderVisitTimeline();
+    })
+    .catch(err => {
+      console.error('Visit log read error:', err);
+      // The VisitLog tab may not exist yet - treat as "no visits logged" rather
+      // than blocking the panel, since this is a brand-new feature.
+      visitLogCache = [];
+      renderVisitTimeline();
+      statusEl.textContent = 'Could not load visit history - check the VisitLog tab exists and is shared.';
+    });
+}
+
+function statusBadgeClass(status) {
+  return 'visit-status-badge visit-status-' + (status || '').replace(/\s+/g, '-');
+}
+
+function renderVisitTimeline() {
+  const statusEl = document.getElementById('visit-log-status');
+  const listEl = document.getElementById('visit-timeline');
+  listEl.innerHTML = '';
+
+  const entries = (visitLogCache || [])
+    .filter(v => v.registration_number === profileRegNumber)
+    .sort((a, b) => (a.visit_date < b.visit_date ? 1 : -1)); // most recent first (string compare works for ISO/DD.MM.YYYY-consistent dates)
+
+  renderLatestUpdateCard(entries[0] || null);
+
+  if (entries.length === 0) {
+    statusEl.textContent = '';
+    statusEl.style.display = 'none';
+    const li = document.createElement('div');
+    li.id = 'visit-log-empty';
+    li.textContent = 'No visits logged yet.';
+    listEl.appendChild(li);
+    return;
+  }
+
+  statusEl.style.display = 'none';
+  entries.forEach(v => {
+    const li = document.createElement('li');
+    li.className = 'visit-entry';
+    li.innerHTML =
+      '<div class="visit-date">' + (v.visit_date || 'Undated') + (v.condition_status ? '<span class="' + statusBadgeClass(v.condition_status) + '">' + v.condition_status + '</span>' : '') + '</div>' +
+      (v.visit_notes ? '<div class="visit-field"><b>Notes:</b> ' + escapeHtml(v.visit_notes) + '</div>' : '') +
+      (v.treatment_given ? '<div class="visit-field"><b>Treatment:</b> ' + escapeHtml(v.treatment_given) + '</div>' : '') +
+      (v.next_visit_plan ? '<div class="visit-field"><b>Next visit plan:</b> ' + escapeHtml(v.next_visit_plan) + '</div>' : '');
+    listEl.appendChild(li);
+  });
+}
+
+// Surfaces the single most recent visit entry right on the Details tab, so
+// staff see "what happened last time" without switching tabs - the ask was
+// "whenever we click a patient, the details and the last updates come in."
+function renderLatestUpdateCard(entry) {
+  const card = document.getElementById('latest-update-card');
+  if (!entry) { card.style.display = 'none'; return; }
+
+  document.getElementById('lu-date').textContent = entry.visit_date || 'Undated';
+  document.getElementById('lu-status-badge').innerHTML = entry.condition_status
+    ? '<span class="' + statusBadgeClass(entry.condition_status) + '" style="margin-left:6px;">' + entry.condition_status + '</span>'
+    : '';
+  document.getElementById('lu-notes').textContent = entry.visit_notes ? 'Notes: ' + entry.visit_notes : '';
+  document.getElementById('lu-treatment').textContent = entry.treatment_given ? 'Treatment: ' + entry.treatment_given : '';
+  document.getElementById('lu-next-plan').textContent = entry.next_visit_plan ? 'Next visit plan: ' + entry.next_visit_plan : '';
+  card.style.display = 'block';
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function submitVisitLog() {
+  if (!profileRegNumber) return;
+  const status = document.getElementById('visit-status').value;
+  const notes = document.getElementById('visit-notes').value.trim();
+  const treatment = document.getElementById('visit-treatment').value.trim();
+  const nextPlan = document.getElementById('visit-next-plan').value.trim();
+
+  if (!notes && !treatment && !status) { alert('Add at least a status, a note, or the treatment given.'); return; }
+
+  const today = new Date();
+  const visitDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+  const payload = {
+    action: 'log_visit',
+    registration_number: profileRegNumber,
+    visit_date: visitDate,
+    condition_status: status,
+    visit_notes: notes,
+    treatment_given: treatment,
+    next_visit_plan: nextPlan
+  };
+
+  const statusEl = document.getElementById('visit-save-status');
+  statusEl.textContent = 'Saving…';
+
+  fetch(SHEET_WEBAPP_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    statusEl.textContent = 'Saved.';
+    // Optimistically add it to the local cache/timeline so staff see it
+    // immediately, without waiting on a manual refresh (no-cors means we
+    // can't confirm the write, same trade-off as "save this location").
+    if (visitLogCache) visitLogCache.push({ registration_number: profileRegNumber, visit_date: visitDate, condition_status: status, visit_notes: notes, treatment_given: treatment, next_visit_plan: nextPlan });
+    renderVisitTimeline();
+    document.getElementById('visit-status').value = '';
+    document.getElementById('visit-notes').value = '';
+    document.getElementById('visit-treatment').value = '';
+    document.getElementById('visit-next-plan').value = '';
+  }).catch(err => {
+    console.error('Visit log write error:', err);
+    statusEl.textContent = 'Could not reach the Google Sheet.';
+  });
+}
+window.submitVisitLog = submitVisitLog;
+
+// ---------------------------------------------------------------------
 // ROUTE OPTIMIZATION (shared by day mode and custom mode)
 // ---------------------------------------------------------------------
 document.getElementById('optimize-btn').addEventListener('click', () => {
-  if (mode === 'day') {
-    if (!selectedDay) return;
-    const todays = patientFeatures.filter(f => f.properties.status === 'Active' && f.properties.assigned_day === selectedDay);
-    computeAndDrawRoute(todays);
-  } else {
-    const chosen = patientFeatures.filter(f => selectedPatientIds.has(f.properties.registration_number));
-    computeAndDrawRoute(chosen);
-  }
+  const chosen = patientFeatures.filter(f => selectedPatientIds.has(f.properties.registration_number));
+  computeAndDrawRoute(chosen);
 });
 
 function computeAndDrawRoute(patients) {
@@ -618,18 +1031,19 @@ function renderStopList(orderedPatients, segments, summary) {
   orderedPatients.forEach((f, idx) => {
     const p = f.properties;
     const leg = segments ? segments[idx] : null;
-    const legDistKm = leg ? (leg.distance / 1000).toFixed(1) : '—';
-    const legMin = leg ? Math.round(leg.duration / 60) : '—';
+    const legDistKm = leg ? (leg.distance / 1000).toFixed(1) : '-';
+    const legMin = leg ? Math.round(leg.duration / 60) : '-';
 
     const li = document.createElement('li');
     li.className = 'stop-card';
     li.innerHTML =
       '<span class="stop-seq">' + (idx + 1) + '</span>' +
-      '<span class="stop-name">' + p.name + '</span>' + badgeFor(p.mobility) +
+      '<span class="stop-name patient-name-link" data-profile-link="1">' + p.name + '</span>' + badgeFor(p.mobility) +
       '<div class="stop-meta">' + p.diagnosis + '</div>' +
       '<div class="stop-meta">' + legDistKm + ' km / ' + legMin + ' min from previous stop</div>';
 
-    li.onclick = () => {
+    li.onclick = (e) => {
+      if (e.target.closest('[data-profile-link]')) { openPatientProfile(p.registration_number); return; }
       const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
       map.setView(latlng, 14);
       const marker = patientMarkers[p.registration_number];
@@ -657,8 +1071,8 @@ function renderStopList(orderedPatients, segments, summary) {
 }
 
 // ---------------------------------------------------------------------
-// NAVIGATE IN GOOGLE MAPS — hands off actual turn-by-turn driving to the
-// phone's own Maps app (voice guidance, live traffic, rerouting — all
+// NAVIGATE IN GOOGLE MAPS - hands off actual turn-by-turn driving to the
+// phone's own Maps app (voice guidance, live traffic, rerouting - all
 // things this dashboard isn't trying to rebuild). Uses Google's free
 // public "Maps URLs" deep-link scheme: no API key, no billing, no card.
 // Docs: https://developers.google.com/maps/documentation/urls
@@ -673,7 +1087,7 @@ function navigateInGoogleMaps() {
   const destination = origin; // round trip: ambulance returns to the hospital
 
   // Google's free Maps URL scheme supports a limited number of waypoints
-  // (roughly 9-10) before it silently drops extras or refuses the link —
+  // (roughly 9-10) before it silently drops extras or refuses the link -
   // fine at this project's daily stop counts (5-10), but worth knowing if
   // a custom-selection day ever grows much larger than that.
   const waypoints = currentRouteOrder
@@ -772,7 +1186,7 @@ function submitNewPatient() {
   const statusEl = document.getElementById('save-status');
   statusEl.textContent = 'Saving to Google Sheet…';
 
-  // Apps Script web apps are called with mode:'no-cors' from static pages —
+  // Apps Script web apps are called with mode:'no-cors' from static pages -
   // this is fire-and-forget (no readable response), so we confirm optimistically.
   fetch(SHEET_WEBAPP_URL, {
     method: 'POST',
@@ -780,7 +1194,7 @@ function submitNewPatient() {
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(payload)
   }).then(() => {
-    statusEl.textContent = 'Saved. Click "Refresh from Sheet" to see it on the map — usable right away in Custom selection, though it won\'t get a scheduled day until prepare_patient_routes.py re-runs.';
+    statusEl.textContent = 'Saved. Click "Refresh from Sheet" to see it on the map and use it in Plan a route.';
     document.getElementById('save-form').style.display = 'none';
   }).catch(err => {
     console.error('Sheet write error:', err);
@@ -790,7 +1204,7 @@ function submitNewPatient() {
 window.submitNewPatient = submitNewPatient;
 
 // ---------------------------------------------------------------------
-// LIVE GPS LOCATION — like Google Maps' blue dot. Uses the browser's
+// LIVE GPS LOCATION - like Google Maps' blue dot. Uses the browser's
 // Geolocation API via Leaflet's built-in map.locate(), in continuous
 // "watch" mode so the marker follows the ambulance as it drives. Requires
 // HTTPS (GitHub Pages serves over HTTPS, so this works once deployed) and
@@ -849,7 +1263,7 @@ map.on('locationerror', e => {
 });
 
 // ---------------------------------------------------------------------
-// "Use my current location" — feeds the live GPS position (from "Show my
+// "Use my current location" - feeds the live GPS position (from "Show my
 // location") straight into the existing Add Location flow, so there's no
 // need to manually click the map or type coordinates. Reuses
 // handleNewLocation() exactly as if that point had been clicked directly.
