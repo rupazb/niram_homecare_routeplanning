@@ -243,6 +243,7 @@
       <div id="profile-tabs">
         <button class="profile-tab-btn active" id="profile-tab-details-btn" onclick="setProfileTab('details')">Details</button>
         <button class="profile-tab-btn" id="profile-tab-visits-btn" onclick="setProfileTab('visits')">Visit history</button>
+        <button class="profile-tab-btn" id="profile-tab-log-btn" onclick="setProfileTab('log')">Log visit</button>
       </div>
       <div id="profile-body">
         <div id="profile-details-tab">
@@ -264,8 +265,10 @@
         <div id="profile-visits-tab" style="display:none;">
           <div id="visit-log-status" class="subtitle">Loading visit history…</div>
           <ul id="visit-timeline"></ul>
+        </div>
+        <div id="profile-log-tab" style="display:none;">
           <div id="log-visit-form">
-            <div class="section-label" style="margin-bottom:6px;">Log this visit</div>
+            <p class="subtitle" style="margin-top:0;">Log what happened after visiting the patient. This adds a new dated entry to their history - it doesn't edit past entries.</p>
             <select id="visit-status">
               <option value="">Patient status (optional)...</option>
               <option value="Stable">Stable</option>
@@ -332,6 +335,7 @@ let patientFeatures = [];
 let patientMarkers = {};
 let mode = 'custom';               // 'custom' | 'location'
 let mobilityFilter = null;         // null = all types; else one of MOBILITY_OPTIONS - drives the dashboard filter chips
+let focusedPatientReg = null;      // registration_number of the patient last "located" from a list - drawn with a highlight ring on the map
 let selectedPatientIds = new Set(); // registration_number set, chosen for the route being planned
 let showDeceased = false;
 let routeLayer = null;
@@ -480,15 +484,14 @@ function renderPatientSearchResults(filterText) {
         '<div class="row-diag">' + (p.diagnosis || '') + '</div>' +
       '</div>';
 
-    // clicking anywhere on the row toggles the checkbox - not just the tiny box itself
+    // tapping the row toggles it for the route AND jumps the map to it, so
+    // staff can visually confirm it's the right patient/location as they build
     row.addEventListener('click', e => {
-      if (e.target.tagName === 'INPUT') return; // checkbox already handles its own toggle below
+      if (e.target.tagName === 'INPUT') { toggleSelection(p.registration_number, e.target.checked); locateOnMap(p.registration_number); return; }
       const cb = row.querySelector('input[type=checkbox]');
       cb.checked = !cb.checked;
       toggleSelection(p.registration_number, cb.checked);
-    });
-    row.querySelector('input[type=checkbox]').addEventListener('change', e => {
-      toggleSelection(p.registration_number, e.target.checked);
+      locateOnMap(p.registration_number);
     });
 
     listEl.appendChild(row);
@@ -525,9 +528,15 @@ function renderSelectedChips() {
     const label = f ? f.properties.name : reg;
     const chip = document.createElement('span');
     chip.className = 'selected-chip';
-    chip.innerHTML = '<span>' + label + '</span>';
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = label;
+    labelSpan.style.cursor = 'pointer';
+    labelSpan.title = 'Show on map';
+    labelSpan.onclick = () => locateOnMap(reg);
+    chip.appendChild(labelSpan);
     const removeBtn = document.createElement('button');
     removeBtn.innerHTML = '&times;';
+    removeBtn.title = 'Remove from route';
     removeBtn.onclick = () => { toggleSelection(reg, false); };
     chip.appendChild(removeBtn);
     el.appendChild(chip);
@@ -687,19 +696,42 @@ function refreshPatientMarkers() {
       dimmed = false;
     }
 
+    const isFocused = focusedPatientReg === p.registration_number;
+
     const marker = L.circleMarker(latlng, {
-      radius: highlighted ? 8 : 6,
+      radius: isFocused ? 10 : (highlighted ? 8 : 6),
       fillColor: isDeceased ? '#7f8c8d' : (MOBILITY_COLOR[p.mobility] || MOBILITY_COLOR.Unknown),
-      color: '#000', weight: 1, fillOpacity: dimmed ? 0.25 : 0.9
+      color: isFocused ? '#2c3e93' : '#000',
+      weight: isFocused ? 3 : 1,
+      fillOpacity: dimmed ? 0.25 : 0.9
     }).addTo(map);
 
     marker.bindPopup(
-      '<b class="patient-name-link" onclick="openPatientProfile(' + JSON.stringify(p.registration_number) + ')">' + p.name + '</b><br>' +
+      '<b class="patient-name-link" onclick="openPatientProfile(\'' + p.registration_number.replace(/'/g, "\\'") + '\')">' + p.name + '</b><br>' +
       p.mobility + (isDeceased ? ' (deceased)' : '') + '<br>' + p.diagnosis + '<br><small>' + p.address + '</small>'
     );
     patientMarkers[p.registration_number] = marker;
   });
 }
+
+// ---------------------------------------------------------------------
+// LOCATE FROM A LIST - used by the patient search results, the selected-
+// patients chips, and the optimized stop list: tapping a patient (outside
+// the checkbox/remove control) pans the map to them, opens their popup,
+// and draws a highlight ring around their marker so it's obvious which
+// point on the map corresponds to which row in the list.
+// ---------------------------------------------------------------------
+function locateOnMap(reg) {
+  const f = patientFeatures.find(x => x.properties.registration_number === reg);
+  if (!f) return;
+  focusedPatientReg = reg;
+  refreshPatientMarkers();
+  const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
+  map.setView(latlng, 15);
+  const marker = patientMarkers[reg];
+  if (marker) marker.openPopup();
+}
+window.locateOnMap = locateOnMap;
 
 // ---------------------------------------------------------------------
 // CASE OVERVIEW STATS - Overall / Active / Pending review / Deceased
@@ -775,8 +807,10 @@ window.closeProfile = closeProfile;
 function setProfileTab(tab) {
   document.getElementById('profile-tab-details-btn').classList.toggle('active', tab === 'details');
   document.getElementById('profile-tab-visits-btn').classList.toggle('active', tab === 'visits');
+  document.getElementById('profile-tab-log-btn').classList.toggle('active', tab === 'log');
   document.getElementById('profile-details-tab').style.display = tab === 'details' ? 'block' : 'none';
   document.getElementById('profile-visits-tab').style.display = tab === 'visits' ? 'block' : 'none';
+  document.getElementById('profile-log-tab').style.display = tab === 'log' ? 'block' : 'none';
   if (tab === 'visits') loadVisitHistory();
 }
 window.setProfileTab = setProfileTab;
@@ -912,16 +946,16 @@ function submitVisitLog() {
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(payload)
   }).then(() => {
-    statusEl.textContent = 'Saved.';
     // Optimistically add it to the local cache/timeline so staff see it
     // immediately, without waiting on a manual refresh (no-cors means we
     // can't confirm the write, same trade-off as "save this location").
     if (visitLogCache) visitLogCache.push({ registration_number: profileRegNumber, visit_date: visitDate, condition_status: status, visit_notes: notes, treatment_given: treatment, next_visit_plan: nextPlan });
-    renderVisitTimeline();
     document.getElementById('visit-status').value = '';
     document.getElementById('visit-notes').value = '';
     document.getElementById('visit-treatment').value = '';
     document.getElementById('visit-next-plan').value = '';
+    statusEl.textContent = '';
+    setProfileTab('visits'); // jump to the timeline so the team sees the entry land right away
   }).catch(err => {
     console.error('Visit log write error:', err);
     statusEl.textContent = 'Could not reach the Google Sheet.';
@@ -1044,10 +1078,7 @@ function renderStopList(orderedPatients, segments, summary) {
 
     li.onclick = (e) => {
       if (e.target.closest('[data-profile-link]')) { openPatientProfile(p.registration_number); return; }
-      const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
-      map.setView(latlng, 14);
-      const marker = patientMarkers[p.registration_number];
-      if (marker) marker.openPopup();
+      locateOnMap(p.registration_number);
     };
     listEl.appendChild(li);
 
