@@ -484,13 +484,14 @@ function renderPatientSearchResults(filterText) {
         '<div class="row-diag">' + (p.diagnosis || '') + '</div>' +
       '</div>';
 
-    // tapping the row toggles it for the route AND jumps the map to it, so
-    // staff can visually confirm it's the right patient/location as they build
+    // ONLY the checkbox adds/removes a patient from the route (and triggers
+    // re-optimizing). Clicking the rest of the row just locates it on the
+    // map, without changing the selection - so browsing patients to look at
+    // them doesn't silently pull them into the route being planned.
     row.addEventListener('click', e => {
-      if (e.target.tagName === 'INPUT') { toggleSelection(p.registration_number, e.target.checked); locateOnMap(p.registration_number); return; }
-      const cb = row.querySelector('input[type=checkbox]');
-      cb.checked = !cb.checked;
-      toggleSelection(p.registration_number, cb.checked);
+      if (e.target.tagName === 'INPUT') {
+        toggleSelection(p.registration_number, e.target.checked);
+      }
       locateOnMap(p.registration_number);
     });
 
