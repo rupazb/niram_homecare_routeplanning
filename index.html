@@ -220,7 +220,7 @@
       <div class="section">
         <button id="optimize-btn" disabled>Optimize route</button>
         <div id="summary"></div>
-        <button class="secondary-btn" id="navigate-btn" style="display:none;" onclick="navigateInGoogleMaps()">Navigate this route in Google Maps</button>
+        <button class="secondary-btn" id="navigate-btn" style="display:none;" onclick="navigateInGoogleMaps()">Start live navigation in Google Maps</button>
         <div id="status-msg">Search and select patients above, then optimize.</div>
       </div>
 
@@ -295,6 +295,13 @@
 // ---------------------------------------------------------------------
 // CONFIG
 // ---------------------------------------------------------------------
+// BUILD_TAG - bump this whenever a new file is delivered. Shown in the
+// "Loaded N patients..." status line and logged to the console on load, so
+// it's possible to confirm whether the browser/CDN is serving this exact
+// file or a stale cached copy - which is the most common cause of "I made
+// the change but it's not showing up" reports.
+const BUILD_TAG = "2026-09-16-live-navigation";
+
 const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
 // Note: a GraphHopper implementation was tried as a fallback provider and
 // removed for now to keep the code simple - revisit if ORS reliability
@@ -354,6 +361,8 @@ let myLocationAccuracyCircle = null;
 // ---------------------------------------------------------------------
 // MAP SETUP
 // ---------------------------------------------------------------------
+console.log('[Niram Dashboard] build:', BUILD_TAG);
+
 map = L.map('map', { zoomControl: false }).setView([13.35, 77.1], 10);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 L.control.zoom({ position: 'bottomleft' }).addTo(map);
@@ -461,7 +470,7 @@ function renderPatientSearchResults(filterText) {
 
   const matches = patientFeatures
     .filter(f => f.properties.status === 'Active')
-    .filter(f => !mobilityFilter || f.properties.mobility === mobilityFilter)
+    .filter(f => !mobilityFilter || (f.properties.mobility || '').trim() === mobilityFilter)
     .filter(f => !q || f.properties.name.toLowerCase().includes(q) || f.properties.registration_number.toLowerCase().includes(q));
 
   if (matches.length === 0) {
@@ -664,7 +673,7 @@ function fetchPatientsFromSheet(isInitialLoad) {
         map.fitBounds(bounds, { padding: [30, 30] });
       }
 
-      statusEl.textContent = 'Loaded ' + features.length + ' patients from the Sheet just now.';
+      statusEl.textContent = 'Loaded ' + features.length + ' patients from the Sheet just now. (build ' + BUILD_TAG + ')';
     })
     .catch(err => {
       console.error('Sheet read error:', err);
@@ -682,7 +691,7 @@ function refreshPatientMarkers() {
   patientFeatures.forEach(f => {
     const p = f.properties;
     if (p.status === 'Deceased' && !showDeceased) return;
-    if (mobilityFilter && p.mobility !== mobilityFilter) return; // dashboard filter chip hides everything else
+    if (mobilityFilter && (p.mobility || '').trim() !== mobilityFilter) return; // dashboard filter chip hides everything else
 
     const latlng = [f.geometry.coordinates[1], f.geometry.coordinates[0]];
     const isDeceased = p.status === 'Deceased';
@@ -1108,6 +1117,21 @@ function renderStopList(orderedPatients, segments, summary) {
 // things this dashboard isn't trying to rebuild). Uses Google's free
 // public "Maps URLs" deep-link scheme: no API key, no billing, no card.
 // Docs: https://developers.google.com/maps/documentation/urls
+//
+// dir_action=navigate is what makes this launch LIVE turn-by-turn guidance
+// instead of just previewing the route with a "Start" button the driver
+// has to tap themselves. Per Google's own docs, this only actually starts
+// navigation when the origin is left blank (Maps then uses the device's
+// live GPS position) or is close to it - which is exactly the situation
+// here, since the driver opens this each morning while physically at the
+// hospital. Origin is deliberately NOT set to the hospital's coordinates:
+// leaving it blank means Maps always starts from wherever the phone
+// actually is, which is what makes turn-by-turn kick in at all, and also
+// means the route still works correctly if a route is ever launched from
+// somewhere other than the hospital. Google Maps does not reorder
+// waypoints given this way (that only happens with an explicit
+// "optimize:true" flag, which is not used here), so the stop order stays
+// exactly what our own optimizer computed.
 // ---------------------------------------------------------------------
 function navigateInGoogleMaps() {
   if (!hospitalLatLng || currentRouteOrder.length === 0) {
@@ -1115,8 +1139,7 @@ function navigateInGoogleMaps() {
     return;
   }
 
-  const origin = hospitalLatLng.lat + ',' + hospitalLatLng.lng;
-  const destination = origin; // round trip: ambulance returns to the hospital
+  const destination = hospitalLatLng.lat + ',' + hospitalLatLng.lng; // round trip: ambulance returns to the hospital
 
   // Google's free Maps URL scheme supports a limited number of waypoints
   // (roughly 9-10) before it silently drops extras or refuses the link -
@@ -1127,10 +1150,10 @@ function navigateInGoogleMaps() {
     .join('|');
 
   const url = 'https://www.google.com/maps/dir/?api=1' +
-    '&origin=' + encodeURIComponent(origin) +
     '&destination=' + encodeURIComponent(destination) +
     '&waypoints=' + encodeURIComponent(waypoints) +
-    '&travelmode=driving';
+    '&travelmode=driving' +
+    '&dir_action=navigate';
 
   window.open(url, '_blank');
 }
