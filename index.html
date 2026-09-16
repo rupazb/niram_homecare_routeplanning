@@ -9,19 +9,47 @@
 
   <style>
     html, body { height: 100%; margin: 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; color: #1c2a2f; }
-    #app { display: flex; height: 100%; width: 100%; }
-    #map { flex: 1; height: 100%; }
-    #sidebar { width: 360px; height: 100%; overflow-y: auto; overflow-x: hidden; background: #f7f8f6; border-left: 1px solid #d8ddd9; box-sizing: border-box; padding: 18px 16px 40px; transition: width 0.28s ease, padding 0.28s ease; }
-    #sidebar.collapsed { width: 0; padding-left: 0; padding-right: 0; border-left: none; }
-    #sidebar-toggle {
-      position: fixed; top: 50%; right: 360px; transform: translateY(-50%);
-      width: 26px; height: 52px; background: white; border: 1px solid #c7d0cc; border-right: none;
-      border-radius: 6px 0 0 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      z-index: 1001; transition: right 0.28s ease; box-shadow: -2px 0 6px rgba(0,0,0,0.12); font-size: 14px; color: #0f6e56;
+    #app { display: flex; height: 100%; width: 100%; position: relative; }
+    #map { flex: 1; height: 100%; min-width: 0; }
+
+    /* ---------- DESKTOP: side panel, drag its left edge to resize ---------- */
+    #sidebar {
+      width: 360px; height: 100%; box-sizing: border-box;
+      background: #f7f8f6; border-left: 1px solid #d8ddd9;
+      display: flex; flex-direction: row; flex-shrink: 0;
+      transition: width 0.28s ease;
     }
-    #sidebar-toggle.collapsed { right: 0; }
+    #sidebar.dragging { transition: none; }
+    #drag-handle {
+      width: 16px; flex-shrink: 0; cursor: ew-resize; touch-action: none;
+      display: flex; align-items: center; justify-content: center;
+      background: #eef1ee; border-right: 1px solid #e2e6e3;
+    }
+    #drag-handle .grip { width: 4px; height: 40px; border-radius: 3px; background: #c7d0cc; }
+    #drag-handle:hover .grip, #drag-handle.active .grip { background: #0f6e56; }
+    #sidebar-inner { flex: 1; min-width: 0; height: 100%; overflow-y: auto; overflow-x: hidden; box-sizing: border-box; padding: 18px 16px 40px; }
     #sidebar h1 { font-size: 17px; margin: 0 0 2px; color: #0f3d3e; }
     #sidebar .subtitle { font-size: 12px; color: #6b7772; margin: 0 0 18px; }
+
+    /* ---------- MOBILE: bottom sheet, drag its top edge up/down ---------- */
+    @media (max-width: 860px) {
+      #app { flex-direction: column; }
+      #map { position: absolute; inset: 0; flex: none; }
+      #sidebar {
+        position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 1000;
+        width: 100%; height: 90vh;
+        flex-direction: column;
+        border-left: none; border-top: 1px solid #d8ddd9;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -6px 20px rgba(0,0,0,0.18);
+        transform: translateY(calc(100% - 68px)); /* default: peek state, map front and center */
+        transition: transform 0.28s ease;
+      }
+      #sidebar.dragging { transition: none; }
+      #drag-handle { width: 100%; height: 22px; cursor: ns-resize; background: transparent; border-right: none; }
+      #drag-handle .grip { width: 40px; height: 5px; }
+      #sidebar-inner { padding: 4px 16px 32px; }
+    }
     .section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e6e3; }
     .section:last-child { border-bottom: none; }
     .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: #6b7772; margin-bottom: 8px; font-weight: 600; }
@@ -136,9 +164,10 @@
 <body>
 <div id="app">
   <div id="map"></div>
-  <button id="sidebar-toggle" onclick="toggleSidebar()">&#8250;</button>
 
   <div id="sidebar">
+    <div id="drag-handle"><span class="grip"></span></div>
+    <div id="sidebar-inner">
     <h1>Niram Ambulance Route Planner</h1>
     <p class="subtitle">Weekly home-visit routing for the palliative care vehicle</p>
 
@@ -229,6 +258,7 @@
         <ul id="stop-list"></ul>
       </div>
     </div>
+    </div>
   </div>
 
   <div id="profile-overlay" onclick="if(event.target===this) closeProfile()">
@@ -300,7 +330,7 @@
 // it's possible to confirm whether the browser/CDN is serving this exact
 // file or a stale cached copy - which is the most common cause of "I made
 // the change but it's not showing up" reports.
-const BUILD_TAG = "2026-09-16-live-navigation";
+const BUILD_TAG = "2026-09-16-draggable-responsive-panel";
 
 const ORS_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImMzZjlkN2QwOGY0ZDQwMWY5YmQxYTA3YzgyNmYxNjliIiwiaCI6Im11cm11cjY0In0="; // OpenRouteService key
 // Note: a GraphHopper implementation was tried as a fallback provider and
@@ -369,19 +399,121 @@ L.control.zoom({ position: 'bottomleft' }).addTo(map);
 stopMarkersLayer.addTo(map);
 
 // ---------------------------------------------------------------------
-// COLLAPSIBLE / SLIDING SIDEBAR
+// DRAGGABLE PANEL - desktop: drag the handle left/right to resize the side
+// panel's width. Mobile (narrow screens): the panel becomes a bottom sheet
+// you drag up/down. Both track the pointer 1:1 while dragging (no CSS
+// transition, so it feels direct), then snap smoothly to the nearest of a
+// few fixed positions on release. Works with mouse or touch via Pointer
+// Events, so no separate mobile/desktop code paths for the gesture itself.
 // ---------------------------------------------------------------------
-let sidebarCollapsed = false;
-function toggleSidebar() {
-  sidebarCollapsed = !sidebarCollapsed;
-  document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
-  document.getElementById('sidebar-toggle').classList.toggle('collapsed', sidebarCollapsed);
-  document.getElementById('sidebar-toggle').innerHTML = sidebarCollapsed ? '&#8249;' : '&#8250;';
-  // Leaflet needs to recalculate its container size once the CSS slide
-  // finishes, or tiles render incorrectly until the map is interacted with.
-  setTimeout(() => map.invalidateSize(), 300);
+const sidebarEl = document.getElementById('sidebar');
+const dragHandleEl = document.getElementById('drag-handle');
+
+const DESKTOP_BREAKPOINT = 860; // px - matches the CSS media query above
+function isMobileLayout() { return window.innerWidth <= DESKTOP_BREAKPOINT; }
+
+// Desktop: panel width in px. Mobile: panel height as translateY offset from
+// the bottom (0 = fully open, larger = more hidden below the fold).
+const DESKTOP_MIN = 56;    // just enough to show the grab handle
+const DESKTOP_DEFAULT = 360;
+const DESKTOP_MAX = 640;
+let desktopWidth = DESKTOP_DEFAULT;
+
+function mobileSnapPoints() {
+  const vh = window.innerHeight;
+  return { peek: vh * 0.90 - 68, half: vh * 0.90 - vh * 0.50, full: 0 };
 }
-window.toggleSidebar = toggleSidebar;
+let mobileOffset = null; // set on first layout below
+
+function applyDesktopWidth(px) {
+  sidebarEl.style.width = px + 'px';
+}
+function applyMobileOffset(px) {
+  sidebarEl.style.transform = 'translateY(' + px + 'px)';
+}
+
+function initPanelForLayout() {
+  if (isMobileLayout()) {
+    sidebarEl.style.width = '';
+    if (mobileOffset === null) mobileOffset = mobileSnapPoints().peek;
+    applyMobileOffset(mobileOffset);
+  } else {
+    sidebarEl.style.transform = '';
+    applyDesktopWidth(desktopWidth);
+  }
+}
+initPanelForLayout();
+window.addEventListener('resize', () => { initPanelForLayout(); map.invalidateSize(); });
+
+function nearest(value, options) {
+  return options.reduce((best, opt) => Math.abs(opt - value) < Math.abs(best - value) ? opt : best);
+}
+
+let invalidateRafPending = false;
+function scheduleInvalidate() {
+  if (invalidateRafPending) return;
+  invalidateRafPending = true;
+  requestAnimationFrame(() => { map.invalidateSize(); invalidateRafPending = false; });
+}
+
+let dragStartPos = 0;
+let dragStartWidth = 0;
+let dragStartOffset = 0;
+let dragMoved = false;
+const TAP_THRESHOLD = 6; // px of movement below which a pointerdown+up counts as a tap, not a drag
+
+dragHandleEl.addEventListener('pointerdown', e => {
+  dragHandleEl.setPointerCapture(e.pointerId);
+  dragHandleEl.classList.add('active');
+  sidebarEl.classList.add('dragging');
+  dragMoved = false;
+  dragStartPos = isMobileLayout() ? e.clientY : e.clientX;
+  dragStartWidth = desktopWidth;
+  dragStartOffset = mobileOffset === null ? mobileSnapPoints().peek : mobileOffset;
+});
+
+dragHandleEl.addEventListener('pointermove', e => {
+  if (!dragHandleEl.hasPointerCapture(e.pointerId)) return;
+  const pos = isMobileLayout() ? e.clientY : e.clientX;
+  if (Math.abs(pos - dragStartPos) > TAP_THRESHOLD) dragMoved = true;
+
+  if (isMobileLayout()) {
+    const delta = e.clientY - dragStartPos; // drag down = positive = more hidden
+    const snaps = mobileSnapPoints();
+    mobileOffset = Math.min(snaps.peek, Math.max(snaps.full, dragStartOffset + delta));
+    applyMobileOffset(mobileOffset);
+  } else {
+    const delta = dragStartPos - e.clientX; // drag left (toward map) = wider
+    desktopWidth = Math.min(DESKTOP_MAX, Math.max(DESKTOP_MIN, dragStartWidth + delta));
+    applyDesktopWidth(desktopWidth);
+  }
+  scheduleInvalidate();
+});
+
+function endDrag() {
+  dragHandleEl.classList.remove('active');
+  sidebarEl.classList.remove('dragging');
+
+  if (!dragMoved) {
+    // Barely moved - treat it as a tap: toggle between tucked away and the default open state.
+    if (isMobileLayout()) {
+      const snaps = mobileSnapPoints();
+      mobileOffset = mobileOffset > snaps.half ? snaps.half : snaps.peek;
+    } else {
+      desktopWidth = desktopWidth <= DESKTOP_MIN + 10 ? DESKTOP_DEFAULT : DESKTOP_MIN;
+    }
+  } else if (isMobileLayout()) {
+    const snaps = mobileSnapPoints();
+    mobileOffset = nearest(mobileOffset, [snaps.full, snaps.half, snaps.peek]);
+  } else {
+    desktopWidth = nearest(desktopWidth, [DESKTOP_MIN, DESKTOP_DEFAULT, DESKTOP_MAX]);
+  }
+
+  if (isMobileLayout()) applyMobileOffset(mobileOffset); else applyDesktopWidth(desktopWidth);
+  setTimeout(() => map.invalidateSize(), 300); // after the snap transition finishes
+}
+dragHandleEl.addEventListener('pointerup', endDrag);
+dragHandleEl.addEventListener('pointercancel', endDrag);
 
 const legend = L.control({ position: 'bottomright' });
 legend.onAdd = function () {
